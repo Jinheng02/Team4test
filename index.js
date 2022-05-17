@@ -44,14 +44,15 @@ app.post('/test', async (req, res, next) => {
 
 // insert content into test_table
 app.post('/test/message', async (req, res, next) => {
-    var testm = req.body.testMassage
-    const insertMessage = await pool.query(`INSERT INTO test_table (testmessage) VALUES ($1) RETURNING *`, [testm])
-    .then(() => {
-        res.json(insertMessage);
-    })
-    .catch((error) => {
-        res.send(error);
-    });
+    try {
+        var testm = req.body.testMassage
+        const newMsgInsert = await pool.query("INSERT INTO test_table () VALUES ($1, $2) RETURNING *", [testm]);
+        res.json(newMsgInsert);
+      }
+      catch (err) {
+        console.error(err);
+        res.send(err);
+      }
 });
 
 // get the table
