@@ -46,7 +46,7 @@ app.post('/test', async (req, res, next) => {
 app.post('/test/message', async (req, res, next) => {
     try {
         var testm = req.body.testMassage
-        const newMsgInsert = await pool.query("INSERT INTO test_table () VALUES ($1, $2) RETURNING *", [testm]);
+        const newMsgInsert = await pool.query("INSERT INTO test_table (testmessage) VALUES ($1) RETURNING *", [testm]);
         res.json(newMsgInsert);
       }
       catch (err) {
