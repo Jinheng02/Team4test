@@ -30,6 +30,11 @@ const CREATE_TEST_TABLE_SQL = `
     );
 `;
 
+// drop table for testing
+const DROP_TABLE_SQL = `
+    DROP TABLE IF EXISTS test_table;
+`;
+
 // creating table
 app.post('/test', async (req, res, next) => {
     
@@ -42,10 +47,22 @@ app.post('/test', async (req, res, next) => {
     });
 });
 
+// deleting table
+app.delete('/test', async (req, res, next) => {
+    
+    pool.query(DROP_TABLE_SQL)
+    .then(() => {
+        res.send(`Table dropped`);
+    })
+    .catch((error) => {
+        res.send(error);
+    });
+});
+
 // insert content into test_table
 app.post('/test/message', async (req, res, next) => {
     try {
-        var testm = req.body.testMassage
+        var testm = req.body.testMessage;
         const newMsgInsert = await pool.query("INSERT INTO test_table (testmessage) VALUES ($1) RETURNING *", [testm]);
         res.json(newMsgInsert);
       }
