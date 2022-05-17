@@ -10,7 +10,7 @@ const { createUserTable } = require('./controller/user');
 //     rejectUnauthorized: false
 //   }
 // });
-const pool = require("./dbConnection.js");
+const pool = require("./dbConnection");
 
 // import product table
 const { createProductTable, add } = require("./controller/product.js");
