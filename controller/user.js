@@ -18,3 +18,11 @@ module.exports.createUserTable = function createUserTable() {
             console.log(error);
         })
 }
+
+module.exports.add = function add(name, price, desc) {
+    return pool.query(`INSERT INTO products (product_name, product_price, product_desc) VALUES($1, $2, $3) RETURNING *`, [name, price, desc])
+        .then(() => console.log("Records Inserted!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
