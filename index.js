@@ -22,7 +22,7 @@ const CREATE_TEST_TABLE_SQL = `
     );
 `;
 
-app.post('/test/table', async (req, res, next) => {
+app.post('/test', async (req, res, next) => {
     
     pool.query(CREATE_TEST_TABLE_SQL)
     .then(() => {
