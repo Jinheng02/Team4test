@@ -3,16 +3,17 @@ const express = require('express');
 const cors = require('cors');
 const { createUserTable } = require('./controller/user');
 
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
+// const { Pool } = require('pg');
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+const pool = require("./dbConnection.js");
 
 // import product table
-const { createProductTable } = require("./controller/product.js");
+const { createProductTable, add } = require("./controller/product.js");
 
 // initialize
 const app = express();
@@ -56,6 +57,17 @@ app.post('/productTable', async (req, res, next) => {
     
     return createProductTable()
     .then(() => res.status(201).send("Product table created!"))
+    .catch(next);
+});
+
+// add new product
+app.post('/product', async (req, res, next) => {
+    const name = req.body.name;
+    const price = req.body.price;
+    const desc = req.body.desc;
+
+    return add(name, price, desc)
+    .then(() => res.status(201).send("New Records Inserted!"))
     .catch(next);
 });
 
