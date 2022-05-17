@@ -14,6 +14,9 @@ const pool = new Pool({
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
+app.use(express.json());
+
 // basic route
 app.get('/',(req, res)=> {
     res.send(`<h1>Server running on port ${PORT}</h1> <h3>Version 1.0</h3>`)
@@ -44,7 +47,7 @@ app.post('/test/message', async (req, res, next) => {
     var testm = req.body.testMassage
     const insertMessage = pool.query(`INSERT INTO test_table (testmessage) VALUES ($1) RETURNING *`, [testm])
     .then(() => {
-         res.send(insertMessage);
+        res.json(insertMessage);
     })
     .catch((error) => {
         res.send(error);
