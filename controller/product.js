@@ -26,7 +26,7 @@ module.exports.createProductTable = function createProductTable(){
 
 module.exports.add = function add(name, price, desc) {
     return query(`INSERT INTO products (product_name, product_price, product_desc) VALUES($1, $2, $3) RETURNING *`, [name, price, desc])
-        .then((response) => response)
+        .then(() => console.log("Records Inserted!"))
         .catch((error) => {
             console.log(error);
         });
