@@ -11,6 +11,9 @@ const pool = new Pool({
   }
 });
 
+// import product table
+const { createProductTable } = require("./controller/product.js");
+
 // initialize
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +49,14 @@ app.post('/test', async (req, res, next) => {
     .catch((error) => {
         res.send(error);
     });
+});
+
+// creating product table
+app.post('/productTable', async (req, res, next) => {
+    
+    return createProductTable()
+    .then(() => res.status(201).send("Product table created!"))
+    .catch(next);
 });
 
 // deleting table
