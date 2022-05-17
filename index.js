@@ -1,6 +1,7 @@
 // includes
 const express = require('express');
 const cors = require('cors');
+const { createUserTable } = require('./controller/user');
 
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -83,6 +84,13 @@ app.get('/db', async (req, res) => {
     console.error(err);
     res.send(err);
     }
+});
+
+// to create the user table
+app.post('/userTable', async (req, res, next) => {
+    return createUserTable()
+    .then(() => res.status(201).send("User table created!"))
+    .catch(next);
 });
 
 // make the app listen
