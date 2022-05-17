@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // basic route
 app.get('/',(req, res)=> {
-    res.send(`Server running on port ${PORT}`)
+    res.send(`<h1>Server running on port ${PORT}</h1> <h3>Version 1.0</h3>`)
 });
 
 // this table is just for testing
