@@ -45,7 +45,7 @@ app.post('/test', async (req, res, next) => {
 // insert content into test_table
 app.post('/test/message', async (req, res, next) => {
     var testm = req.body.testMassage
-    const insertMessage = pool.query(`INSERT INTO test_table (testmessage) VALUES ($1) RETURNING *`, [testm])
+    const insertMessage = await pool.query(`INSERT INTO test_table (testmessage) VALUES ($1) RETURNING *`, [testm])
     .then(() => {
         res.json(insertMessage);
     })
@@ -60,7 +60,7 @@ app.get('/db', async (req, res) => {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM test_table');
     const results = { 'results': (result) ? result.rows : null};
-    res.send(result.result);
+    res.send(results.result);
     } catch (err) {
     console.error(err);
     res.send(err);
