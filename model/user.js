@@ -75,7 +75,7 @@ module.exports.updateUserPw = function updateUserPw(password, userid) {
 
 // to GET user by its USERID from users table in the database
 module.exports.getUserById = function getUserById(userid) {
-    return pool.query(`SELECT username, fullname, email, address, role FROM users WHERE userid = $1`, [userid])
+    return pool.query(`SELECT userid, username, fullname, email, address, role FROM users WHERE userid = $1`, [userid])
         .then((response) => response.rows[0])
         .catch((error) => {
             throw error;
@@ -84,7 +84,7 @@ module.exports.getUserById = function getUserById(userid) {
 
 // to GET ALL users from users table in the database
 module.exports.getUsers = function getUsers() {
-    return pool.query(`SELECT username, fullname, email, role FROM users`)
+    return pool.query(`SELECT userid, username, fullname, email, role FROM users`)
         .then((response) => response.rows)
         .catch((error) => {
             throw error;
