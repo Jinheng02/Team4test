@@ -5,6 +5,8 @@ const cors = require('cors');
 const { createUserTable, addUser } = require("../model/user");
 // for product database
 const { createProductTable, addProduct } = require("../model/product");
+// for orders database
+const { createOrdersTable, addOrder } = require("../model/order");
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
 
@@ -38,6 +40,14 @@ app.post('/productTable', async (req, res, next) => {
     .then(() => res.status(201).send("Product table created!"))
     .catch(next);
 });
+
+// to create the orders table
+app.post('/ordersTable', async (req, res, next) => {
+    return createOrdersTable()
+    .then(() => res.status(201).send("Product table created!"))
+    .catch(next);
+});
+
 
 ///////////////////////////////////////////////////
 // END OF SECTION TO CREATE TABLES IN THE DATABASE
@@ -79,5 +89,26 @@ app.post('/product', async (req, res, next) => {
 ////////////////////////////////////////
 // END OF SECTION FOR PRODUCTS DATABASE
 ////////////////////////////////////////
+
+/////////////////////////////////////////////
+// THIS SECTION IS FOR THE ORDERS DATABASE
+/////////////////////////////////////////////
+
+//add new order to the orders table
+app.post('/newOrder', async (req, res, next) => {
+    const amount = req.body.amount;
+    const total = req.body.total;
+    const paymentMethod = req.body.paymentMethod;
+    const ref = req.body.ref; 
+
+    return addProduct(user_id, amount, total, paymentMethod, checkout_status, ref)
+    .then(() => res.status(201).send("New Records Inserted!"))
+    .catch(next);
+});
+
+////////////////////////////////////////
+// END OF SECTION FOR PRODUCTS DATABASE
+////////////////////////////////////////
+
 
 module.exports = app;
