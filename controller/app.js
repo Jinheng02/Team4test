@@ -103,12 +103,12 @@ app.get('/products/:id', async (req, res, next) => {
 
 // to update products table
 app.put('/products/:id', async (req, res, next) => {
-    const productid = req.params.id;
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
     const image_url = req.body.image_url;
     const category_id = req.body.category_id;
+    const productid = req.params.id;
     
     return updateProduct(name, price, desc, image_url, category_id, productid)
     .then(() => res.send(`Updated product successfully!`))
