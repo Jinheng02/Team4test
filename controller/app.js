@@ -5,6 +5,8 @@ const cors = require('cors');
 // for product database
 const { add } = require("../model/product");
 
+const PORT = process.env.PORT || 3000;
+
 // initialize
 const app = express();
 
