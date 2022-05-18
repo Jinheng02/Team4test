@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, updateUserPw, dropUsersTable } = require("../model/user");
+const { createUsersTable, addUser, updateUser, updateUserPw, deleteUser, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -98,6 +98,18 @@ app.put('/users/:id/resetPassword', async (req, res, next) => {
     // supply the 2 parameters retrieved by the caller of the web service
     return updateUserPw(password, userid)
     .then(() => res.status(200).send("Password has been reset successfully!"))
+    .catch(next);
+});
+
+// DELETE method 
+// to delete a user by its userid in the database
+app.put('/users/:id', async (req, res, next) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    const userid = req.params.id;
+
+    // supply the 1 parameter retrieved by the caller of the web service
+    return deleteUser(userid)
+    .then(() => res.status(200).send("User is successfully deleted"))
     .catch(next);
 });
 

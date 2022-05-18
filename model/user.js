@@ -73,6 +73,15 @@ module.exports.updateUserPw = function updateUserPw(password, userid) {
         });
 };
 
+// to DELETE user from users table in the database
+module.exports.deleteUser = function deleteUser(userid) {
+    return pool.query(`DELETE FROM users WHERE userid = $1`, [userid])
+        .then((response) => response.rowCount)
+        .catch((error) => {
+            throw error;
+        });
+};
+
 // to drop the users table
 module.exports.dropUsersTable= function dropUsersTable() {
     return pool.query(DROP_USERS_TABLE)
