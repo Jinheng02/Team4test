@@ -18,7 +18,7 @@ app.use(express.json());
 // basic route
 // to test whether server is running
 app.get('/',(req, res)=> {
-    res.send(`<h1>Server running on port ${PORT}</h1> <h3>Version 1.0</h3>`)
+    res.send(`<h1>Server running on port ${PORT}</h1> <h3>Version 1.1</h3>`)
 });
 
 ////////////////////////////////////////////////////////
