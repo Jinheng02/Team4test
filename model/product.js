@@ -6,7 +6,7 @@ const CREATE_PRODUCT_TABLE = `
         name VARCHAR(100) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
         desc VARCHAR(255) NOT NULL
-        image_url VARCHAR(255) NULL,
+        image_url VARCHAR(100) NULL,
         category_id INT NOT NULL
     )
 `
