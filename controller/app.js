@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, deleteUser, dropUsersTable, getUserById } = require("../model/user");
+const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, deleteUser, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
