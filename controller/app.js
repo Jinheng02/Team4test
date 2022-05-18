@@ -104,11 +104,12 @@ app.put('/users/:id/resetPassword', async (req, res, next) => {
 // GET method
 // to get a user by its userid from the database
 app.get('/users/:id', async (req, res, next) => {
+    // retrieve from the req body msg the parameters that will be passing over
     const userid = req.params.id;
 
     // supply the 1 parameter retrieved by the caller of the web service
     return getUserById(userid)
-    .then((results) => res.status(200).json(results))
+    .then((result) => res.status(200).json(result))
     .catch(next);
 });
 
