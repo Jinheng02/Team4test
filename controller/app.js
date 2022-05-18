@@ -103,7 +103,7 @@ app.put('/users/:id/resetPassword', async (req, res, next) => {
 
 // DELETE method 
 // to delete a user by its userid in the database
-app.put('/users/:id', async (req, res, next) => {
+app.delete('/users/:id', async (req, res, next) => {
     // retrieve from the req body msg the parameters that will be passing over
     const userid = req.params.id;
 
