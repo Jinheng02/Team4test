@@ -9,10 +9,23 @@ const CREATE_PRODUCT_TABLE = `
     )
 `
 
+const DROP_TABLE_SQL = `
+    DROP TABLE IF EXISTS products;
+`
+
 module.exports.createProductTable = function createProductTable(){
     return pool.query(CREATE_PRODUCT_TABLE)
         .then(() => {
-            console.log("Products created");
+            console.log("Products table created");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
+module.exports.deleteProductTable = function deleteProductTable(){
+    return pool.query(DROP_TABLE_SQL)
+        .then(() => {
+            console.log("Products table deleted!");
         }).catch((err) => {
             console.log(err);
         })
