@@ -4,7 +4,7 @@ const cors = require('cors');
 // for user database
 const { createUserTable, addUser } = require("../model/user");
 // for product database
-const { createProductTable, addProduct, deleteProductTable, getProduct} = require("../model/product");
+const { createProductTable, addProduct, deleteProductTable, getProduct, getProductById } = require("../model/product");
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
 
