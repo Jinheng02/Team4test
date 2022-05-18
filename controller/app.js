@@ -86,7 +86,7 @@ app.get('/products', async (req, res, next) => {
 });
 
 // to get products from database
-app.get('/product/:id', async (req, res, next) => {
+app.get('/products/:id', async (req, res, next) => {
     const productid = req.params.id
 
     return getProductById(productid)
