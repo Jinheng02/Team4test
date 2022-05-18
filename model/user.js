@@ -19,9 +19,9 @@ module.exports.createUserTable = function createUserTable() {
         })
 }
 
-module.exports.add = function add(name, price, desc) {
-    return pool.query(`INSERT INTO products (product_name, product_price, product_desc) VALUES($1, $2, $3) RETURNING *`, [name, price, desc])
-        .then(() => console.log("Records Inserted!"))
+module.exports.addUser = function addUser(email, fullname) {
+    return pool.query(`INSERT INTO users (email, fullname) VALUES($1, $2) RETURNING *`, [email, fullname])
+        .then(() => console.log("New User Records Inserted!"))
         .catch((error) => {
             console.log(error);
         });
