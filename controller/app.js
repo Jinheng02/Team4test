@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, addUser, updateUser, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -68,6 +68,22 @@ app.post('/newUser', async (req, res, next) => {
 
     // supply the 6 parameters retrieved by the caller of the web service
     return addUser(username, fullname, email, password, address, role)
+    .then((result) => res.status(201).json(result))
+    .catch(next);
+});
+
+// PUT method
+// to uodate user by its userid in the database
+app.put('/users/:id', async (req, res, next) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    const username = req.body.username;
+    const fullname = req.body.fullname;
+    const email = req.body.email;
+    const address = req.body.address;
+    const userid = req.params.id;
+
+    // supply the 4 parameters retrieved by the caller of the web service
+    return addUser(username, fullname, email, address, userid)
     .then((result) => res.status(201).json(result))
     .catch(next);
 });

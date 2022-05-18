@@ -51,6 +51,18 @@ module.exports.addUser = function addUser(username, fullname, email, password, a
 };
 
 // to UPDATE user info in users table in the database
+module.exports.updateUser = function updateUser(username, fullname, email, address, userid) {
+    return pool.query(`UPDATE users SET username = $1, fullname = $2, email = $3, address = $4 WHERE userid = $5 RETURNING username, fullname, email, address`, [username, fullname, email, address, userid])
+        .then((response) => response.rows[0])
+        .catch((error) => {
+            if (error.code === POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT) {
+                throw createdHttpError(422, `Field(s) entered already exists`);
+            }
+            else {
+                throw error; // unexpected error
+            }
+        });
+};
 
 // to drop the users table
 module.exports.dropUsersTable= function dropUsersTable() {
