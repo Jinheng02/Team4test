@@ -66,7 +66,7 @@ app.post('/newUser', async (req, res, next) => {
 /////////////////////////////////////////////
 
 // to add new product to the products database
-app.post('/product', async (req, res, next) => {
+app.post('/products', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
@@ -77,11 +77,25 @@ app.post('/product', async (req, res, next) => {
 });
 
 // to get products from database
-app.get('/product', async (req, res, next) => {
+app.get('/products', async (req, res, next) => {
     return getProduct()
     .then((results) => res.send(results))
     .catch(next);
 });
+
+// to get products from database
+// app.get('/product/:id', async (req, res, next) => {
+//     return getProductById()
+//     .then((results) => res.send(results))
+//     .catch(next);
+// });
+
+// to delete products table
+// app.delete('/product', async (req, res, next) => {
+//     return deleteProductTable()
+//     .then(() => res.status(201).send(`Product table dropped!`))
+//     .catch(next);
+// });
 
 // delete products table
 app.delete('/productTable', async (req, res, next) => {
