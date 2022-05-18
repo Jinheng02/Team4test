@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, addUser, updateUser, updateUserPw, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -73,7 +73,7 @@ app.post('/newUser', async (req, res, next) => {
 });
 
 // PUT method
-// to uodate user by its userid in the database
+// to update user by its userid in the database
 app.put('/users/:id', async (req, res, next) => {
     // retrieve from the req body msg the parameters that will be passing over
     const username = req.body.username;
@@ -85,6 +85,19 @@ app.put('/users/:id', async (req, res, next) => {
     // supply the 5 parameters retrieved by the caller of the web service
     return updateUser(username, fullname, email, address, userid)
     .then((result) => res.status(201).json(result))
+    .catch(next);
+});
+
+// PUT method
+// to rest user password by its userid in the database
+app.put('/users/:id/resetPassword', async (req, res, next) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    const password = req.body.password;
+    const userid = req.params.id;
+
+    // supply the 2 parameters retrieved by the caller of the web service
+    return updateUserPw(password, userid)
+    .then(() => res.status(200).send("Password has been reset successfully!"))
     .catch(next);
 });
 

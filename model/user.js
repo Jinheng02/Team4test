@@ -64,6 +64,15 @@ module.exports.updateUser = function updateUser(username, fullname, email, addre
         });
 };
 
+// to UPDATE user password in users table in the database
+module.exports.updateUserPw = function updateUserPw(password, userid) {
+    return pool.query(`UPDATE users SET password = $1 WHERE userid = $2`, [password, userid])
+        .then(() => console.log("Password has been reset"))
+        .catch((error) => {
+            throw error;
+        });
+};
+
 // to drop the users table
 module.exports.dropUsersTable= function dropUsersTable() {
     return pool.query(DROP_USERS_TABLE)
