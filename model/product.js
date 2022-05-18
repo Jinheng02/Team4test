@@ -5,7 +5,7 @@ const CREATE_PRODUCT_TABLE = `
         product_id SERIAL primary key,
         name VARCHAR(100) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
-        description VARCHAR(255) NOT NULL
+        description VARCHAR(255) NOT NULL,
         image_url VARCHAR(100) NULL,
         category_id INT NOT NULL
     )
