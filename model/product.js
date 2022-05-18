@@ -33,8 +33,9 @@ module.exports.deleteProductTable = function deleteProductTable(){
         })
 };
 
-module.exports.addProduct = function addProduct(name, price, desc) {
-    return pool.query(`INSERT INTO products (product_name, product_price, product_desc) VALUES($1, $2, $3) RETURNING *`, [name, price, desc])
+module.exports.addProduct = function addProduct(name, price, desc, image_url, category_id) {
+    return pool.query(`INSERT INTO products (name, price, desc, image_url, category_id) VALUES($1, $2, $3, $4, $5) RETURNING *`,
+        [name, price, desc, image_url, category_id])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
             console.log(error);
@@ -49,10 +50,10 @@ module.exports.getProduct = function getProduct() {
         });
 };
 
-// module.exports.getProductById = function getProductById(product_Id) {
-//     return pool.query(`SELECT * FROM products`)
-//         .then((results) => results.rows)
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// };
+module.exports.getProductById = function getProductById(productid) {
+    return pool.query(`SELECT * FROM products where product_id = ` + productid)
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};

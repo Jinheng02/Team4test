@@ -70,9 +70,11 @@ app.post('/products', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
+    const image_url = req.body.image_url;
+    const category_id = req.body.category_id;
 
-    return addProduct(name, price, desc)
-    .then(() => res.status(201).send("New Records Inserted!"))
+    return addProduct(name, price, desc, image_url, category_id)
+    .then(() => res.status(201).send("New Product Inserted!"))
     .catch(next);
 });
 
@@ -84,15 +86,17 @@ app.get('/products', async (req, res, next) => {
 });
 
 // to get products from database
-// app.get('/product/:id', async (req, res, next) => {
-//     return getProductById()
-//     .then((results) => res.send(results))
-//     .catch(next);
-// });
+app.get('/product/:id', async (req, res, next) => {
+    const productid = req.params.id
 
-// to delete products table
-// app.delete('/product', async (req, res, next) => {
-//     return deleteProductTable()
+    return getProductById(productid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// to update products table
+// app.put('/product/:id', async (req, res, next) => {
+//     return updateProductTable()
 //     .then(() => res.status(201).send(`Product table dropped!`))
 //     .catch(next);
 // });
