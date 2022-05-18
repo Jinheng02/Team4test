@@ -65,7 +65,7 @@ module.exports.updateProduct = function updateProduct(name, price, desc, image_u
             description = $3, 
             image_url = $4, 
             category_id = $5
-        WHERE product_id = $6 RETURNING *` 
+        WHERE product_id = $6 RETURNING *`,
         [name, price, desc, image_url, category_id, product_id])
         .then(() => console.log("Records Updated!"))
         .catch((error) => {
