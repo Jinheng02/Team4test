@@ -38,8 +38,8 @@ module.exports.createUsersTable = function createUserTable() {
 
 // to ADD new user to the users table in the database
 module.exports.addUser = function addUser(username, fullname, email, password, address, role) {
-    return pool.query(`INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, [username, fullname, email, password, address, role])
-        .then(() => console.log("New User Record Inserted!"))
+    return pool.query(`INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING username, fullname, email, role`, [username, fullname, email, password, address, role])
+        .then((response) => response.rows[0])
         .catch((error) => {
             if (error.code === POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT) {
                 throw createdHttpError(422, `Field(s) entered already exists`);
@@ -50,6 +50,8 @@ module.exports.addUser = function addUser(username, fullname, email, password, a
         });
 };
 
+// to UPDATE user info in users table in the database
+
 // to drop the users table
 module.exports.dropUsersTable= function dropUsersTable() {
     return pool.query(DROP_USERS_TABLE)
@@ -59,12 +61,3 @@ module.exports.dropUsersTable= function dropUsersTable() {
             console.log(error);
         });
 };
-
-// // Get users
-// module.exports.get = function get(name, price, desc) {
-//     return pool.query(`select * from products`)
-//         .then(() => console.log("Records Inserted!"))
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// };

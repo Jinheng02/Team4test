@@ -68,7 +68,7 @@ app.post('/newUser', async (req, res, next) => {
 
     // supply the 6 parameters retrieved by the caller of the web service
     return addUser(username, fullname, email, password, address, role)
-    .then(() => res.status(201).send("New User Inserted Successfully!"))
+    .then((result) => res.status(201).json(result))
     .catch(next);
 });
 
