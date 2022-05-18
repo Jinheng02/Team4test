@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, updateUserPw, deleteUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, deleteUser, dropUsersTable, getUserById } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -98,6 +98,17 @@ app.put('/users/:id/resetPassword', async (req, res, next) => {
     // supply the 2 parameters retrieved by the caller of the web service
     return updateUserPw(password, userid)
     .then(() => res.status(200).send("Password has been reset successfully!"))
+    .catch(next);
+});
+
+// GET method
+// to get a user by its userid from the database
+app.get('/users/:id', async (req, res, next) => {
+    const userid = req.params.id;
+
+    // supply the 1 parameter retrieved by the caller of the web service
+    return getUserById(userid)
+    .then((results) => res.status(200).json(results))
     .catch(next);
 });
 
