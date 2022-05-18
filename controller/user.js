@@ -26,3 +26,11 @@ module.exports.add = function add(name, price, desc) {
             console.log(error);
         });
 };
+
+module.exports.get = function add(name, price, desc) {
+    return pool.query(`select * from products`)
+        .then(() => console.log("Records Inserted!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
