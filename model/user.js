@@ -38,7 +38,7 @@ module.exports.createUsersTable = function createUserTable() {
 
 // to ADD new user to the users table in the database
 module.exports.addUser = function addUser(username, fullname, email, password, address, role) {
-    return pool.query(`INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING username, fullname, email, role`, [username, fullname, email, password, address, role])
+    return pool.query(`INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING userid, username, fullname, email, role`, [username, fullname, email, password, address, role])
         .then((response) => response.rows[0])
         .catch((error) => {
             if (error.code === POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT) {
