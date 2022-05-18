@@ -27,7 +27,8 @@ module.exports.addUser = function addUser(email, fullname) {
         });
 };
 
-module.exports.get = function add(name, price, desc) {
+// Get users
+module.exports.get = function get(name, price, desc) {
     return pool.query(`select * from products`)
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {

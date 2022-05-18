@@ -15,6 +15,7 @@ const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS products;
 `
 
+// Create Product Table
 module.exports.createProductTable = function createProductTable(){
     return pool.query(CREATE_PRODUCT_TABLE)
         .then(() => {
@@ -24,6 +25,7 @@ module.exports.createProductTable = function createProductTable(){
         })
 };
 
+// Delete Product Table
 module.exports.deleteProductTable = function deleteProductTable(){
     return pool.query(DROP_TABLE_SQL)
         .then(() => {
@@ -33,6 +35,7 @@ module.exports.deleteProductTable = function deleteProductTable(){
         })
 };
 
+// Add products 
 module.exports.addProduct = function addProduct(name, price, desc, image_url, category_id) {
     return pool.query(`INSERT INTO products (name, price, description, image_url, category_id) VALUES($1, $2, $3, $4, $5) RETURNING *`,
         [name, price, desc, image_url, category_id])
@@ -42,6 +45,7 @@ module.exports.addProduct = function addProduct(name, price, desc, image_url, ca
         });
 };
 
+// Get Products
 module.exports.getProduct = function getProduct() {
     return pool.query(`SELECT * FROM products`)
         .then((results) => results.rows)
@@ -50,6 +54,7 @@ module.exports.getProduct = function getProduct() {
         });
 };
 
+// Get Product By Id
 module.exports.getProductById = function getProductById(productid) {
     return pool.query(`SELECT * FROM products where product_id = ` + productid)
         .then((results) => results.rows)
@@ -58,6 +63,7 @@ module.exports.getProductById = function getProductById(productid) {
         });
 };
 
+// Update Product
 module.exports.updateProduct = function updateProduct(name, price, desc, image_url, category_id, product_id) {
     return pool.query(`Update products 
         set name = $1, 
