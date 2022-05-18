@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUserTable, addUser } = require("../model/user");
+const { createUserTable, addUser, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -63,9 +63,20 @@ app.post('/newUser', async (req, res, next) => {
     .then(() => res.status(201).send("New User Inserted Successfully!"))
     .catch(next);
 });
+
+// to drop the user table in the database
+app.delete('/userTable', async (req, res, next) => {
+    return dropUsersTable()
+    .then(() => res.status(201).send("Test table dropped successfully!"))
+    .catch(next);
+});
 /////////////////////////////////////
 // END OF SECTION FOR USERS DATABASE
 /////////////////////////////////////
+
+
+
+
 
 
 /////////////////////////////////////////////
