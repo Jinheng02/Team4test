@@ -4,7 +4,14 @@ const cors = require('cors');
 // for user database
 const { createUserTable, addUser } = require("../model/user");
 // for product database
-const { createProductTable, addProduct, deleteProductTable, getProduct, getProductById } = require("../model/product");
+const { createProductTable, 
+    addProduct, 
+    deleteProductTable, 
+    getProduct, 
+    getProductById , 
+    updateProduct
+} = require("../model/product");
+
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
 
@@ -87,7 +94,7 @@ app.get('/products', async (req, res, next) => {
 
 // to get products from database
 app.get('/products/:id', async (req, res, next) => {
-    const productid = req.params.id
+    const productid = req.params.id;
 
     return getProductById(productid)
     .then((results) => res.send(results))
@@ -95,11 +102,18 @@ app.get('/products/:id', async (req, res, next) => {
 });
 
 // to update products table
-// app.put('/product/:id', async (req, res, next) => {
-//     return updateProductTable()
-//     .then(() => res.status(201).send(`Product table dropped!`))
-//     .catch(next);
-// });
+app.put('/products/:id', async (req, res, next) => {
+    const productid = req.params.id;
+    const name = req.body.name;
+    const price = req.body.price;
+    const desc = req.body.desc;
+    const image_url = req.body.image_url;
+    const category_id = req.body.category_id;
+    
+    return updateProduct(name, price, desc, image_url, category_id, productid)
+    .then(() => res.send(`Updated product successfully!`))
+    .catch(next);
+});
 
 // delete products table
 app.delete('/productTable', async (req, res, next) => {
