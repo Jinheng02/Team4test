@@ -83,7 +83,7 @@ app.put('/users/:id', async (req, res, next) => {
     const userid = req.params.id;
 
     // supply the 5 parameters retrieved by the caller of the web service
-    return addUser(username, fullname, email, address, userid)
+    return updateUser(username, fullname, email, address, userid)
     .then((result) => res.status(201).json(result))
     .catch(next);
 });
