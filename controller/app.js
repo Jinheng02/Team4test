@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUserTable, addUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, addUser, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -34,8 +34,8 @@ app.get('/',(req, res)=> {
 
 // to create the user table
 app.post('/userTable', async (req, res, next) => {
-    return createUserTable()
-    .then(() => res.status(201).send("User table created!"))
+    return createUsersTable()
+    .then(() => res.status(201).send("Users table created!"))
     .catch(next);
 });
 
