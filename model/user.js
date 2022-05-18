@@ -5,6 +5,9 @@
 // import dbConnection
 const pool = require("../dbConnection");
 
+// import http-errors module
+const createdHttpError = require('http-errors');
+
 // query to create the users table
 const CREATE_USERS_TABLE = `
     CREATE TABLE users  (
@@ -34,13 +37,18 @@ module.exports.createUsersTable = function createUserTable() {
 };
 
 // to ADD new user to the users table in the database
-// module.exports.addUser = function addUser(email, fullname) {
-//     return pool.query(`INSERT INTO users (email, fullname) VALUES($1, $2) RETURNING *`, [email, fullname])
-//         .then(() => console.log("New User Records Inserted!"))
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// };
+module.exports.addUser = function addUser(username, fullname, email, password, address, role) {
+    return pool.query(`INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5. $6) RETURNING *`, [username, fullname, email, password, address, role])
+        .then(() => console.log("New User Record Inserted!"))
+        .catch((error) => {
+            if (error.code === POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT) {
+                throw createdHttpError(422, `Field(s) entered already exists`);
+            }
+            else {
+                throw error; // unexpected error
+            }
+        });
+};
 
 // to drop the users table
 module.exports.dropUsersTable= function dropUsersTable() {

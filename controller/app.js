@@ -45,25 +45,34 @@ app.post('/productTable', async (req, res, next) => {
     .then(() => res.status(201).send("Product table created!"))
     .catch(next);
 });
-
 ///////////////////////////////////////////////////
 // END OF SECTION TO CREATE TABLES IN THE DATABASE
 ///////////////////////////////////////////////////
+
+
 
 //////////////////////////////////////////
 // THIS SECTION IS FOR THE USERS DATABASE
 /////////////////////////////////////////
 
+// POST method
 // to add new user to the database
 app.post('/newUser', async (req, res, next) => {
-    const email = req.body.email;
+    // retrieve from the req body msg the parameters that will be passing over
+    const username = req.body.username;
     const fullname = req.body.fullname;
+    const email = req.body.email;
+    const password = req.body.password;
+    const address = req.body.address;
+    const role = req.body.role;
 
-    return addUser(email, fullname)
+    // supply the 6 parameters retrieved by the caller of the web service
+    return addUser(username, fullname, email, password, address, role)
     .then(() => res.status(201).send("New User Inserted Successfully!"))
     .catch(next);
 });
 
+// DELETE method
 // to drop the user table in the database
 app.delete('/userTable', async (req, res, next) => {
     return dropUsersTable()
@@ -132,7 +141,6 @@ app.delete('/productTable', async (req, res, next) => {
     .then(() => res.status(201).send(`Product table dropped!`))
     .catch(next);
 });
-
 ////////////////////////////////////////
 // END OF SECTION FOR PRODUCTS DATABASE
 ////////////////////////////////////////
