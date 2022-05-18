@@ -101,7 +101,7 @@ app.post('/newOrder', async (req, res, next) => {
     const paymentMethod = req.body.paymentMethod;
     const ref = req.body.ref; 
 
-    return addProduct(user_id, amount, total, paymentMethod, checkout_status, ref)
+    return addOrder(user_id, amount, total, paymentMethod, checkout_status, ref)
     .then(() => res.status(201).send("New Records Inserted!"))
     .catch(next);
 });
