@@ -59,7 +59,7 @@ module.exports.getProductById = function getProductById(productid) {
 };
 
 module.exports.updateProduct = function updateProduct(name, price, desc, image_url, category_id, product_id) {
-    return pool.query(`Update products set name, price, desc, image_url, category_id FROM (VALUES ($1, $2, $3, $4, $5)
+    return pool.query(`Update products set name, price, description, image_url, category_id FROM (VALUES ($1, $2, $3, $4, $5)
         AS `(name, price, desc, image_url, category_id)`) WHERE product_id = `, product_id, `RETURNING *`)
         .then(() => console.log("Records Updated!"))
         .catch((error) => {
