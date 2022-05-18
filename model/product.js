@@ -7,7 +7,7 @@ const CREATE_PRODUCT_TABLE = `
         price DECIMAL(6,2) NOT NULL,
         desc VARCHAR(255) NOT NULL
         image_url VARCHAR(255) NULL,
-        category_id INT foreign key REFERENCES categories(category_id)
+        category_id foreign key REFERENCES categories(category_id)
     )
 `
 
