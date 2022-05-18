@@ -2,9 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUserTable } = require('./controller/user');
 // for product database
-const { createProductTable, add } = require("./controller/product.js");
+const { add } = require("../model/product");
 
 // initialize
 const app = express();
