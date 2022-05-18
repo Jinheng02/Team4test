@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, deleteUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, getUsers, deleteUser, dropUsersTable } = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -109,6 +109,14 @@ app.get('/users/:id', async (req, res, next) => {
 
     // supply the 1 parameter retrieved by the caller of the web service
     return getUserById(userid)
+    .then((result) => res.status(200).json(result))
+    .catch(next);
+});
+
+// GET method
+// to get all users in the users table from the database
+app.get('/users', async (req, res, next) => {
+    return getUsers()
     .then((result) => res.status(200).json(result))
     .catch(next);
 });

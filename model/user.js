@@ -82,6 +82,15 @@ module.exports.getUserById = function getUserById(userid) {
         });
 };
 
+// to GET ALL users from users table in the database
+module.exports.getUsers = function getUsers() {
+    return pool.query(`SELECT username, fullname, email, role FROM users`)
+        .then((response) => response.rows)
+        .catch((error) => {
+            throw error;
+        });
+};
+
 // to DELETE user from users table in the database
 module.exports.deleteUser = function deleteUser(userid) {
     return pool.query(`DELETE FROM users WHERE userid = $1`, [userid])
