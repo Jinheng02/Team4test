@@ -18,7 +18,7 @@ const CREATE_USERS_TABLE = `
         password VARCHAR(100) NOT NULL,
         address VARCHAR(200),
         role VARCHAR(45) NOT NULL,
-        created_at TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 `
 // query to drop the users table
