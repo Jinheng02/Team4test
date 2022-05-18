@@ -75,7 +75,7 @@ module.exports.updateUserPw = function updateUserPw(password, userid) {
 
 // to GET user by its USERID from users table in the database
 module.exports.getUserById = function getUserById(userid) {
-    return pool.query(`SELECT * FROM users WHERE userid = $1 RETURNING *`, [userid])
+    return pool.query(`SELECT username, fullname, email, address, role FROM users WHERE userid = $1 RETURNING username, fullname, email, address, role`, [userid])
         .then((response) => response.rows[0])
         .catch((error) => {
             throw error;

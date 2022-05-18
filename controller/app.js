@@ -108,7 +108,7 @@ app.get('/users/:id', async (req, res, next) => {
 
     // supply the 1 parameter retrieved by the caller of the web service
     return getUserById(userid)
-    .then((results) => res.status(200).send(results))
+    .then((results) => res.status(200).json(results))
     .catch(next);
 });
 
