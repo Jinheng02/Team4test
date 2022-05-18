@@ -4,7 +4,7 @@ const cors = require('cors');
 // for user database
 const { createUserTable, addUser } = require("../model/user");
 // for product database
-const { createProductTable, addProduct, deleteProductTable} = require("../model/product");
+const { createProductTable, addProduct, deleteProductTable, getProduct} = require("../model/product");
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
 
@@ -43,23 +43,6 @@ app.post('/productTable', async (req, res, next) => {
 // END OF SECTION TO CREATE TABLES IN THE DATABASE
 ///////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////
-// THIS SECTION IS USED FOR CREATING TABLES IN DATABASE
-////////////////////////////////////////////////////////
-
-// delete products table
-app.delete('/productTable', async (req, res, next) => {
-    
-    return deleteProductTable()
-    .then(() =>res.status(201).send(`Product table dropped!`))
-    .catch(next);
-});
-
-///////////////////////////////////////////////////
-// END OF SECTION TO CREATE TABLES IN THE DATABASE
-///////////////////////////////////////////////////
-
-
 //////////////////////////////////////////
 // THIS SECTION IS FOR THE USERS DATABASE
 /////////////////////////////////////////
@@ -92,6 +75,21 @@ app.post('/product', async (req, res, next) => {
     .then(() => res.status(201).send("New Records Inserted!"))
     .catch(next);
 });
+
+// to get products from database
+app.get('/product', async (req, res, next) => {
+    return getProduct()
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// delete products table
+app.delete('/productTable', async (req, res, next) => {
+    return deleteProductTable()
+    .then(() => res.status(201).send(`Product table dropped!`))
+    .catch(next);
+});
+
 ////////////////////////////////////////
 // END OF SECTION FOR PRODUCTS DATABASE
 ////////////////////////////////////////

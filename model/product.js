@@ -38,3 +38,11 @@ module.exports.addProduct = function addProduct(name, price, desc) {
             console.log(error);
         });
 };
+
+module.exports.getProduct = function getProduct() {
+    return pool.query(`SELECT * FROM products`)
+        .then((results) => results)
+        .catch((error) => {
+            console.log(error);
+        });
+};
