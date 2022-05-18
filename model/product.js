@@ -41,7 +41,7 @@ module.exports.addProduct = function addProduct(name, price, desc) {
 
 module.exports.getProduct = function getProduct() {
     return pool.query(`SELECT * FROM products`)
-        .then((results) => results)
+        .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
