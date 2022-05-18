@@ -82,7 +82,7 @@ app.put('/users/:id', async (req, res, next) => {
     const address = req.body.address;
     const userid = req.params.id;
 
-    // supply the 4 parameters retrieved by the caller of the web service
+    // supply the 5 parameters retrieved by the caller of the web service
     return addUser(username, fullname, email, address, userid)
     .then((result) => res.status(201).json(result))
     .catch(next);
