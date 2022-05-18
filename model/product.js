@@ -5,7 +5,7 @@ const CREATE_PRODUCT_TABLE = `
         product_id SERIAL primary key,
         name VARCHAR(100) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
-        desc VARCHAR(255) NOT NULL
+        description VARCHAR(255) NOT NULL
         image_url VARCHAR(100) NULL,
         category_id INT NOT NULL
     )
@@ -34,7 +34,7 @@ module.exports.deleteProductTable = function deleteProductTable(){
 };
 
 module.exports.addProduct = function addProduct(name, price, desc, image_url, category_id) {
-    return pool.query(`INSERT INTO products (name, price, desc, image_url, category_id) VALUES($1, $2, $3, $4, $5) RETURNING *`,
+    return pool.query(`INSERT INTO products (name, price, description, image_url, category_id) VALUES($1, $2, $3, $4, $5) RETURNING *`,
         [name, price, desc, image_url, category_id])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
