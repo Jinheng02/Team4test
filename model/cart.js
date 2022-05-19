@@ -3,7 +3,7 @@ const pool = require("../dbConnection");
 const CREATE_CART_TABLE = `
 CREATE TABLE cart (
     cart_id SERIAL primary key,
-    user_id SERIAL foreign key
+    user_id int foreign key
 )
 `
 const CREATE_CART_ITEM_TABLE = `
@@ -38,7 +38,7 @@ module.exports.addCart = function addCart(cart_id, user_id) {
             console.log(error);
         });
 };
-/////////////////////// CART ITEM ///////////////////////////
+/////////////////////// CART ITEM ////////////////////////
 
 // create cart item table
 module.exports.createCartItemTable = function createCartItemTable() {

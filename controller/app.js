@@ -59,6 +59,7 @@ app.post('/newUser', async (req, res, next) => {
     .catch(next);
 });
 
+// to add new cart
 app.post('/users/cart', async (req, res, next) => {
     const cart_id = req.body.cart_id;
     const user_id = req.body.user_id;
@@ -68,6 +69,7 @@ app.post('/users/cart', async (req, res, next) => {
     .catch(next);
 });
 
+// new cart item 
 app.post('/users/cart/cartitem', async (req, res, next) => {
     const id = req.body.id;
     const cart_id = req.body.cart_id;
