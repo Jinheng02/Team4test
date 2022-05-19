@@ -12,6 +12,10 @@ const { createProductTable,
     updateProduct
 } = require("../model/product");
 
+
+// for cart database
+const { createCartTable } = require('../model/cart');
+
 // for orders database
 const { createOrdersTable, addOrder } = require("../model/order");
 const { addCartItem } = require('../model/cart');
