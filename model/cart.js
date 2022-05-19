@@ -16,7 +16,7 @@ CREATE TABLE cartItem (
 // To create cart table
 module.exports.createCartTable = function createCartTable() {
     return pool.query(CREATE_CART_TABLE)
-        .then(() => {app.post('/cart', async (req, res, next) => {
+        .then(() => {app.post('/usercart', async (req, res, next) => {
             const cart_id = req.body.cart_id;
             const user_id = req.body.user_id;
         
@@ -38,6 +38,23 @@ module.exports.addCart = function addCart(cart_id, user_id) {
             console.log(error);
         });
 };
+
+// create cart item table
+module.exports.createCartItemTable = function createCartItemTable() {
+    return pool.query(CREATE_CART_ITEM_TABLE)
+        .then(() => {app.post('/cart', async (req, res, next) => {
+            const cart_id = req.body.cart_id;
+            const user_id = req.body.user_id;
+        
+            return addCart(cart_id, user_id)
+            .then(() => res.status(201).send("New Records Inserted!"))
+            .catch(next);
+        });
+            console.log("Cart table created");
+        }).catch((error) => {
+            console.log(error);
+        })
+}
 
 // Add new cart item
 module.exports.addCartItem = function addCartItem(id, cart_id, product_id) {

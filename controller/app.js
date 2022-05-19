@@ -58,15 +58,6 @@ app.post('/newUser', async (req, res, next) => {
     .catch(next);
 });
 
-app.get('/users', async (req, res, next) => {
-    const cart_id = req.body.cart_id;
-    const user_id = req.body.user_id;
-
-    return addProduct(cart_id, user_id)
-    .then(() => res.status(201).send("New Records Inserted!"))
-    .catch(next);
-});
-
 app.post('/users/cart', async (req, res, next) => {
     const cart_id = req.body.cart_id;
     const user_id = req.body.user_id;
