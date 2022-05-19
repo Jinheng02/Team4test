@@ -5,6 +5,7 @@ const cors = require('cors');
 const { createUserTable, addUser } = require("../model/user");
 // for product database
 const { createProductTable, addProduct } = require("../model/product");
+const { addCartItem } = require('../model/cart');
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
 
@@ -63,6 +64,17 @@ app.post('/users/cart', async (req, res, next) => {
     const user_id = req.body.user_id;
 
     return addCart(cart_id, user_id)
+    .then(() => res.status(201).send("New Records Inserted!"))
+    .catch(next);
+});
+
+app.post('/users/cart/cartitem', async (req, res, next) => {
+    const id = req.body.id;
+    const cart_id = req.body.cart_id;
+    const product_id = req.body.product_id;
+    const quantity = req.body.quantity;
+
+    return addCartItem(id, cart_id, product_id, quantity)
     .then(() => res.status(201).send("New Records Inserted!"))
     .catch(next);
 });
