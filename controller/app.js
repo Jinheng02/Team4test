@@ -14,7 +14,6 @@ const { createProductTable,
 
 // for orders database
 const { createOrdersTable, addOrder } = require("../model/order");
-const { createProductTable, addProduct } = require("../model/product");
 const { addCartItem } = require('../model/cart');
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
