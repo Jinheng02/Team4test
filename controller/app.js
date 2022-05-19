@@ -57,6 +57,24 @@ app.post('/newUser', async (req, res, next) => {
     .then(() => res.status(201).send("New User Inserted Successfully!"))
     .catch(next);
 });
+
+app.get('/users', async (req, res, next) => {
+    const cart_id = req.body.cart_id;
+    const user_id = req.body.user_id;
+
+    return addProduct(cart_id, user_id)
+    .then(() => res.status(201).send("New Records Inserted!"))
+    .catch(next);
+});
+
+app.post('/users/cart', async (req, res, next) => {
+    const cart_id = req.body.cart_id;
+    const user_id = req.body.user_id;
+
+    return addCart(cart_id, user_id)
+    .then(() => res.status(201).send("New Records Inserted!"))
+    .catch(next);
+});
 /////////////////////////////////////
 // END OF SECTION FOR USERS DATABASE
 /////////////////////////////////////
@@ -80,4 +98,23 @@ app.post('/product', async (req, res, next) => {
 // END OF SECTION FOR PRODUCTS DATABASE
 ////////////////////////////////////////
 
+
+////////////////////////////////////////
+// THIS SECTION IS FOR THE CART DATABASE
+////////////////////////////////////////
+
+
+app.post('/cart/cart_item', async (req, res, next) => {
+    const id = req.body.id;
+    const cart_id = req.body.cart_id;
+    const product_id = req.body.product_id;
+    const quantity = req.body.quantity;
+
+    return addCartItem(id, cart_id, product_id, quantity)
+    .then(() => res.status(201).send("New Cart item Inserted!"))
+    .catch(next);
+});
+////////////////////////////////////////
+// END OF SECTION FOR CART DATABASE
+////////////////////////////////////////
 module.exports = app;

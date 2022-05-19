@@ -2,7 +2,7 @@
   "name": "team4test",
   "version": "1.0.0",
   "description": "Testing before coding the actual CA1",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node ./server.js",
     "dev": "nodemon /server.js"
