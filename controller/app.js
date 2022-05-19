@@ -151,12 +151,9 @@ app.delete('/userTable', async (req, res, next) => {
 });
 
 // to add new cart
-app.post('/users/cart', async (req, res, next) => {
-    const cart_id = req.body.cart_id;
-    const user_id = req.body.user_id;
-
-    return addCart(cart_id, user_id)
-    .then(() => res.status(201).send("New Records Inserted!"))
+app.post('/cartTable', async (req, res, next) => {
+    return createCartTable()
+    .then(() => res.status(201).send("Cart table created!"))
     .catch(next);
 });
 
