@@ -3,7 +3,7 @@ const pool = require("../dbConnection");
 const CREATE_CART_TABLE = `
 CREATE TABLE cart (
     cart_id SERIAL primary key,
-    user_id int foreign key
+    user_id int
 )
 `
 const CREATE_CART_ITEM_TABLE = `
@@ -13,22 +13,16 @@ CREATE TABLE cartItem (
     product_id  ?????,
     quantity INT(4) NOT NULL
 )`
+
 // To create cart table
-module.exports.createCartTable = function createCartTable() {
+module.exports.createCartTable = function createCartTable(){
     return pool.query(CREATE_CART_TABLE)
-        .then(() => {app.post('/users/cart', async (req, res, next) => {
-            const cart_id = req.body.cart_id;
-            const user_id = req.body.user_id;
-        
-            return addCart(cart_id, user_id)
-            .then(() => res.status(201).send("New Records Inserted!"))
-            .catch(next);
-        });
-            console.log("Cart table created");
-        }).catch((error) => {
-            console.log(error);
+        .then(() => {
+            console.log("Cart table created!");
+        }).catch((err) => {
+            console.log(err);
         })
-}
+};
 
 // Add new cart
 module.exports.addCart = function addCart(cart_id, user_id) {

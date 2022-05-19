@@ -150,24 +150,7 @@ app.delete('/userTable', async (req, res, next) => {
     .catch(next);
 });
 
-// to add new cart
-app.post('/cartTable', async (req, res, next) => {
-    return createCartTable()
-    .then(() => res.status(201).send("Cart table created!"))
-    .catch(next);
-});
 
-// new cart item 
-app.post('/users/cart/cartitem', async (req, res, next) => {
-    const id = req.body.id;
-    const cart_id = req.body.cart_id;
-    const product_id = req.body.product_id;
-    const quantity = req.body.quantity;
-
-    return addCartItem(id, cart_id, product_id, quantity)
-    .then(() => res.status(201).send("New Records Inserted!"))
-    .catch(next);
-});
 /////////////////////////////////////
 // END OF SECTION FOR USERS DATABASE
 /////////////////////////////////////
@@ -268,6 +251,25 @@ app.post('/cart/cart_item', async (req, res, next) => {
 
     return addCartItem(id, cart_id, product_id, quantity)
     .then(() => res.status(201).send("New Cart item Inserted!"))
+    .catch(next);
+});
+
+// to add new cart
+app.post('/cartTable', async (req, res, next) => {
+    return createCartTable()
+    .then(() => res.status(201).send("Cart table created!"))
+    .catch(next);
+});
+
+// new cart item 
+app.post('/users/cart/cartitem', async (req, res, next) => {
+    const id = req.body.id;
+    const cart_id = req.body.cart_id;
+    const product_id = req.body.product_id;
+    const quantity = req.body.quantity;
+
+    return addCartItem(id, cart_id, product_id, quantity)
+    .then(() => res.status(201).send("New Records Inserted!"))
     .catch(next);
 });
 ////////////////////////////////////////
