@@ -263,7 +263,6 @@ app.post('/newOrder', async (req, res, next) => {
 // THIS SECTION IS FOR THE CART DATABASE
 ////////////////////////////////////////
 
-
 app.post('/cart/cart_item', async (req, res, next) => {
     const id = req.body.id;
     const cart_id = req.body.cart_id;
