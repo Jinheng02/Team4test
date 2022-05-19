@@ -234,7 +234,7 @@ app.post('/newOrder', async (req, res, next) => {
 });
 
 ////////////////////////////////////////
-// END OF SECTION FOR PRODUCTS DATABASE
+// END OF SECTION FOR ORDERS DATABASE
 ////////////////////////////////////////
 
 
