@@ -19,7 +19,7 @@ const DROP_TABLE_SQL = `
 module.exports.createProductTable = function createProductTable(){
     return pool.query(CREATE_PRODUCT_TABLE)
         .then(() => {
-            console.log("Products table created");
+            console.log("Products table created!");
         }).catch((err) => {
             console.log(err);
         })
