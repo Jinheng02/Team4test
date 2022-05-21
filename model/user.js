@@ -36,7 +36,7 @@ const User = {
             }
             // no error
             else {
-                return callback(null, result);
+                return callback(null, result.rows);
             }
         })
     }
