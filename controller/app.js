@@ -21,6 +21,7 @@ const { createCategoryTable,
     addCategory, 
     deleteCategoryTable, 
     getCategory,
+    getCategoryById
 } = require("../model/category");
 
 
@@ -388,10 +389,9 @@ app.delete('/productTable', async (req, res, next) => {
 
 // to add new category to the categories database
 app.post('/category', async (req, res, next) => {
-    const categoryid = req.body.categoryid;
     const categoryName = req.body.categoryName;
 
-    return addCategory(categoryid, categoryName)
+    return addCategory(categoryName)
     .then(() => res.status(201).send("New Category Inserted!"))
     .catch(next);
 });
