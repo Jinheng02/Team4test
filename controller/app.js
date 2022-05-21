@@ -469,11 +469,17 @@ app.post('/orders', async (req, res, next) => {
     const userid = req.body.userid;
     const total = req.body.total;
 
+<<<<<<< HEAD
     let items 
     items += total
     items += userid
     console.log(items)
 
+=======
+    const items =+ userid;
+    items =+ total;
+    console.log(items);
+>>>>>>> 387684e19b4a197bd8337cba745b10c52725d9b2
 
     return addOrder(userid, total)
     .then(() => res.status(201).send("New Order Inserted!"))
@@ -549,25 +555,6 @@ app.post('/users/cart/cartitem', async (req, res, next) => {
 /////////////////////////////////////
 // END OF SECTION FOR USERS DATABASE
 /////////////////////////////////////
-
-
-/////////////////////////////////////////////
-// THIS SECTION IS FOR THE PRODUCTS DATABASE
-/////////////////////////////////////////////
-
-// to add new product to the products database
-app.post('/product', async (req, res, next) => {
-    const name = req.body.name;
-    const price = req.body.price;
-    const desc = req.body.desc;
-
-    return addProduct(name, price, desc)
-    .then(() => res.status(201).send("New Records Inserted!"))
-    .catch(next);
-});
-////////////////////////////////////////
-// END OF SECTION FOR PRODUCTS DATABASE
-////////////////////////////////////////
 
 
 ////////////////////////////////////////
