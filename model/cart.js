@@ -3,9 +3,13 @@ const pool = require("../dbConnection");
 const CREATE_CARTS_TABLE = `
 CREATE TABLE carts (
     cart_id serial primary key,
-    user_id int foreign key references users (userid)
 )
 `
+const ALTER_CARTS_TABLE = `
+alter table carts
+add foreign key (userid) references users (userid)
+`
+
 const CREATE_CART_ITEM_TABLE = `
 CREATE TABLE cartItem (
     id SERIAL primary key,
@@ -16,7 +20,7 @@ CREATE TABLE cartItem (
 
 //////////////////// CARTS TABLE ///////////////////////
 
-// To create cart table
+// To create cart table (with fk   )
 module.exports.createCartsTable = function createCartsTable() {
     return pool.query(CREATE_CARTS_TABLE)
         .then(() => {
