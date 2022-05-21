@@ -13,6 +13,7 @@ CREATE TABLE cartItem (
     product_id  ?????,
     quantity INT(4) NOT NULL
 )`
+
 // To create cart table
 module.exports.createCartTable = function createCartTable() {
     return pool.query(CREATE_CART_TABLE)
