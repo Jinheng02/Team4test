@@ -40,7 +40,7 @@ module.exports.alterCartsTable = function alterCartsTable() {
 };
 
 // Add new cart
-module.exports.addCart = function addCart(cart_id, user_id) {
+module.exports.newCart = function newCart(cart_id, user_id) {
     return pool.query(`INSERT INTO cart (cart_id, user_id) VALUES($1, $2) RETURNING *`, [cart_id, user_id])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
