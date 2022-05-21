@@ -21,7 +21,6 @@ const { createCategoryTable,
     addCategory, 
     deleteCategoryTable, 
     getCategory,
-    deleteCategoryTable
 } = require("../model/category");
 
 
