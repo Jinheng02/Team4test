@@ -25,7 +25,7 @@ const DROP_USERS_TABLE = `
 
 const User = {
     // get all the users in the database method 
-    getUsers : function (callback) {
+    getUsers: function (callback) {
         const getAllUsersQuery = `SELECT userid, username, fullname, email, role FROM users`;
         pool.query(getAllUsersQuery, (error, result) => {
             if (error) {
@@ -48,11 +48,25 @@ const User = {
             }
             // no error
             else {
-                // return the results with all the users
+                // return the results with the user id entered
                 return callback(null, result.rows);
             }
-        })
+        });
     },  //-- end of getUsersById method
+    addUser: function(username, fullname, email, password, address, role, callback) {
+        const addUserQuery = `INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING userid, username, fullname, email, role, created_at`;
+        pool.query(addUserQuery, [username, fullname, email, password, address, role], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rows[0]);
+            }
+        });
+    },  //-- end of addUser method
 }
 
 // export the User object so that it can be used by the controller layer when the web service is being called

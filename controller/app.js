@@ -103,6 +103,38 @@ app.get('/users/:id/', (req, res) => {
     });
 });
 
+// POST method
+// to add a new user into the database
+app.post('/users/', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    var username = req.body.username;
+    var fullname = req.body.fullname;
+    var email = req.body.email;
+    var password = req.body.password;
+    var address = req.body.address;
+    var role = req.body.role;
+
+    // supply the 6 parameters retrieved by the caller of the web service
+    User.addUser(username, fullname, email, password, address, role, (err, result) => {
+        if (!err) {
+            // send the result back to the user 
+            res.status(201).send({"User added with these data": result});
+        }
+        // there is an error 
+        else {
+            // if statement to check whether the username or email provided already exist (check if there is any duplicates)
+            // if error code = POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT, send the error result 
+            if (err.code == "POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT") {
+                res.status(422).send("{\"Result\":\"username or email provided already exists\"}")
+            }
+            else {
+                // else the error is unknown
+                res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+            }
+        }
+    });
+});
+
 // DELETE method
 // to drop the user table in the database
 app.delete('/userTable', async (req, res, next) => {
