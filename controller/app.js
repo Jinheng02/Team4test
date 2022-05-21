@@ -12,9 +12,17 @@ const { createProductTable,
     addProduct, 
     deleteProductTable, 
     getProduct, 
-    getProductById , 
+    getProductById, 
     updateProduct
 } = require("../model/product");
+
+// for categories database
+const { createCategoryTable, 
+    addCategory, 
+    deleteCategorytTable, 
+    getCategory,
+    deleteCategoryTable
+} = require("../model/category");
 
 
 // for cart database
@@ -23,6 +31,7 @@ const { createCartTable } = require('../model/cart');
 // for orders database
 const { createOrdersTable, addOrder } = require("../model/order");
 const { addCartItem } = require('../model/cart');
+
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
 
@@ -308,9 +317,6 @@ app.delete('/userTable', async (req, res, next) => {
 
 
 
-
-
-
 /////////////////////////////////////////////
 // THIS SECTION IS FOR THE PRODUCTS DATABASE
 /////////////////////////////////////////////
@@ -335,7 +341,7 @@ app.get('/products', async (req, res, next) => {
     .catch(next);
 });
 
-// to get products from database
+// to get product by id from database
 app.get('/products/:id', async (req, res, next) => {
     const productid = req.params.id;
 
@@ -367,6 +373,64 @@ app.delete('/productTable', async (req, res, next) => {
 ////////////////////////////////////////
 // END OF SECTION FOR PRODUCTS DATABASE
 ////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////
+// THIS SECTION IS FOR THE CATEGORIES DATABASE
+///////////////////////////////////////////////
+
+// to add new category to the categories database
+app.post('/category', async (req, res, next) => {
+    const categoryid = req.body.categoryid;
+    const categoryName = req.body.categoryName;
+
+    return addCategory(categoryid, categoryName)
+    .then(() => res.status(201).send("New Category Inserted!"))
+    .catch(next);
+});
+
+// to get categories from database
+app.get('/category', async (req, res, next) => {
+    return getCategory()
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// to get category from database
+app.get('/category/:id', async (req, res, next) => {
+    const categoryid = req.params.id;
+
+    return getCategoryById(categoryid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// to update products table
+// app.put('/products/:id', async (req, res, next) => {
+//     const name = req.body.name;
+//     const price = req.body.price;
+//     const desc = req.body.desc;
+//     const image_url = req.body.image_url;
+//     const category_id = req.body.category_id;
+//     const productid = req.params.id;
+    
+//     return updateProduct(name, price, desc, image_url, category_id, productid)
+//     .then(() => res.send(`Updated product successfully!`))
+//     .catch(next);
+// });
+
+// delete products table
+app.delete('/categoryTable', async (req, res, next) => {
+    return deleteCategoryTable()
+    .then(() => res.status(201).send(`Category table dropped!`))
+    .catch(next);
+});
+//////////////////////////////////////////
+// END OF SECTION FOR CATEGORIES DATABASE
+//////////////////////////////////////////
+
+
 
 /////////////////////////////////////////////
 // THIS SECTION IS FOR THE ORDERS DATABASE
