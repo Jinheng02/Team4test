@@ -451,9 +451,9 @@ app.delete('/categoryTable', async (req, res, next) => {
 /////////////////////////////////////////////
 
 //alter orders table to add Foreign Key
-app.post('/ordersTableAlter', async (req, res, next) => {
+app.put('/ordersTableAlter', async (req, res, next) => {
     return alterOrdersTable()
-    .then(() => res.status(201).send(`Product table altered!`))
+    .then(() => res.status(201).send(`Order table altered!`))
     .catch(next);
 });
 

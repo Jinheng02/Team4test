@@ -9,7 +9,6 @@ const CREATE_ORDERS_TABLE = `
     )
 `
 
-
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS orders;
 `
@@ -42,7 +41,7 @@ module.exports.deleteOrdersTable = function deleteOrdersTable(){
 //alter table for foreign key
 module.exports.alterOrdersTable = function alterOrdersTable() {
     return pool.query(ALTER_ORDERS_TABLE)
-        .then(() => console.log("Table altered!"))
+        .then(() => console.log("Orders Table altered!"))
         .catch((error) => {
             console.log(error);
         });
