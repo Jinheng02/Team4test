@@ -5,107 +5,121 @@
 // import dbConnection
 const pool = require("../dbConnection");
 
-// import http-errors module
-const createdHttpError = require('http-errors');
+// // query to create the users table
+// const CREATE_USERS_TABLE = `
+//     CREATE TABLE users  (
+//         userid SERIAL NOT NULL PRIMARY KEY,
+//         username VARCHAR(50) UNIQUE NOT NULL,
+//         fullname VARCHAR(100) NOT NULL,
+//         email VARCHAR(100) NOT NULL UNIQUE,
+//         password VARCHAR(100) NOT NULL,
+//         address VARCHAR(200),
+//         role VARCHAR(45) NOT NULL,
+//         created_at TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+//     );
+// `
+// // query to drop the users table
+// const DROP_USERS_TABLE = `
+//     DROP TABLE IF EXISTS users;
+// `
 
-// query to create the users table
-const CREATE_USERS_TABLE = `
-    CREATE TABLE users  (
-        userid SERIAL NOT NULL PRIMARY KEY,
-        username VARCHAR(50) UNIQUE NOT NULL,
-        fullname VARCHAR(100) NOT NULL,
-        email VARCHAR(100) NOT NULL UNIQUE,
-        password VARCHAR(100) NOT NULL,
-        address VARCHAR(200),
-        role VARCHAR(45) NOT NULL,
-        created_at TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
-    );
-`
-// query to drop the users table
-const DROP_USERS_TABLE = `
-    DROP TABLE IF EXISTS users;
-`
-
-// To create user table
-module.exports.createUsersTable = function createUserTable() {
-    return pool.query(CREATE_USERS_TABLE)
-        .then(() => {
-            console.log("User table created");
-        }).catch((error) => {
-            console.log(error);
-        });
-};
-
-// to ADD new user to the users table in the database
-module.exports.addUser = function addUser(username, fullname, email, password, address, role) {
-    return pool.query(`INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING userid, username, fullname, email, role`, [username, fullname, email, password, address, role])
-        .then((response) => response.rows[0])
-        .catch((error) => {
-            if (error.code === POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT) {
-                throw createdHttpError(422, `Field(s) entered already exists`);
+const User = {
+    // get all the users in the database method 
+    getUsers: function (callback) {
+        const getAllUsersQuery = `SELECT userid, username, fullname, email, role FROM users`;
+        pool.query(getAllUsersQuery, (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
             }
+            // no error
             else {
-                throw error; // unexpected error
+                // return the results with all the users
+                return callback(null, result.rows);
             }
         });
-};
-
-// to UPDATE user info in users table in the database
-module.exports.updateUser = function updateUser(username, fullname, email, address, userid) {
-    return pool.query(`UPDATE users SET username = $1, fullname = $2, email = $3, address = $4 WHERE userid = $5 RETURNING username, fullname, email, address`, [username, fullname, email, address, userid])
-        .then((response) => response.rows[0])
-        .catch((error) => {
-            if (error.code === POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT) {
-                throw createdHttpError(422, `Field(s) entered already exists`);
+    },   //-- end of getUsers method
+    getUserById: function (userid, callback) {
+        const getUserByIdQuery = `SELECT userid, username, fullname, email, address, role FROM users WHERE userid = $1`;
+        pool.query(getUserByIdQuery, [userid], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
             }
+            // no error
             else {
-                throw error; // unexpected error
+                // return the results with the user id entered
+                return callback(null, result.rows);
             }
         });
-};
-
-// to UPDATE user password in users table in the database
-module.exports.updateUserPw = function updateUserPw(password, userid) {
-    return pool.query(`UPDATE users SET password = $1 WHERE userid = $2`, [password, userid])
-        .then(() => console.log("Password has been reset"))
-        .catch((error) => {
-            throw error;
+    },  //-- end of getUsersById method
+    addUser: function(username, fullname, email, password, role, callback) {
+        const addUserQuery = `INSERT INTO users (username, fullname, email, password, role) VALUES($1, $2, $3, $4, $5) RETURNING userid, username, fullname, email, role, created_at`;
+        pool.query(addUserQuery, [username, fullname, email, password, role], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rows[0]);
+            }
         });
-};
-
-// to GET user by its USERID from users table in the database
-module.exports.getUserById = function getUserById(userid) {
-    return pool.query(`SELECT userid, username, fullname, email, address, role FROM users WHERE userid = $1`, [userid])
-        .then((response) => response.rows[0])
-        .catch((error) => {
-            throw error;
+    },  //-- end of addUser method
+    addUserAddress: function(address, userid, callback) {
+        const addUserAddressQuery = `UPDATE users SET address = $1 WHERE userid = $2  RETURNING address, userid`;
+        pool.query(addUserAddressQuery, [address, userid], (error, result) => {
+            if (error) {
+                // return the error 
+                console.log(error);
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rows[0]);
+            }
         });
-};
-
-// to GET ALL users from users table in the database
-module.exports.getUsers = function getUsers() {
-    return pool.query(`SELECT userid, username, fullname, email, role FROM users`)
-        .then((response) => response.rows)
-        .catch((error) => {
-            throw error;
+    },  //-- end of addUserAddress
+    // to update a single user by the id
+    updateUser: function(username, fullname, email, address, userid, callback) {
+        const updateUserQuery = `UPDATE users SET username = $1, fullname = $2, email = $3, address = $4 WHERE userid = $5 RETURNING username, fullname, email, address`;
+        pool.query(updateUserQuery, [username, fullname, email, address, userid], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rowCount);
+            }
         });
-};
-
-// to DELETE user from users table in the database
-module.exports.deleteUser = function deleteUser(userid) {
-    return pool.query(`DELETE FROM users WHERE userid = $1`, [userid])
+    },   //-- end of updateUser method
+    updateUserPw: function(password, userid, callback) {
+        const updateUserPwQuery = `UPDATE users SET password = $1 WHERE userid = $2`;
+        pool.query(updateUserPwQuery, [password, userid], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rowCount);
+            }
+        });
+    },   //-- end of updateUserPw method
+    deleteUser: function(userid) {
+        return pool.query(`DELETE FROM users WHERE userid = $1`, [userid])
         .then((response) => response.rowCount)
         .catch((error) => {
             throw error;
         });
-};
+    },   //-- end of deleteUser method
+}
 
-// to drop the users table
-module.exports.dropUsersTable= function dropUsersTable() {
-    return pool.query(DROP_USERS_TABLE)
-        .then(() => {
-            console.log("Users Table Dropped Successfully!");
-        }).catch((error) => {
-            console.log(error);
-        });
-};
+// export the User object so that it can be used by the controller layer when the web service is being called
+// call the function to retrieve the result 
+module.exports = User;

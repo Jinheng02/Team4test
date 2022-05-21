@@ -2,7 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, getUsers, deleteUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, dropUsersTable } = require("../model/user");
+const User = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -77,26 +78,94 @@ app.post('/ordersTable', async (req, res, next) => {
 // THIS SECTION IS FOR THE USERS DATABASE
 /////////////////////////////////////////
 
-// POST method
-// to add new user to the database
-app.post('/newUser', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const username = req.body.username;
-    const fullname = req.body.fullname;
-    const email = req.body.email;
-    const password = req.body.password;
-    const address = req.body.address;
-    const role = req.body.role;
+// GET method
+// to get all users in the database
+app.get('/users/', (req, res) => {
+    // retrieve users from the database
+    User.getUsers((error, result) => {
+        // if there is no error, send back the result
+        if (!error) {
+            res.status(200).send(result);
+        }
+        // there is an error
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}");
+        }
+    });
+});
 
-    // supply the 6 parameters retrieved by the caller of the web service
-    return addUser(username, fullname, email, password, address, role)
-    .then((result) => res.status(201).json(result))
-    .catch(next);
+// GET method
+// to retrive the data of a single user based on their id
+app.get('/users/:id/', (req, res) => {
+    // retrieve the id of the user we want to retrieve from the database
+    var userid = req.params.id;
+    User.getUserById(userid, (err, result) => {
+        // if there is no error, send back the result 
+        if (!err) {
+            res.status(200).send(result);
+        }
+        // there is an error 
+        else {
+            // provide some json data msg to signify some error 
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}");
+        }
+    });
+});
+
+// POST method
+// to add a new user into the database
+app.post('/users/', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    var username = req.body.username;
+    var fullname = req.body.fullname;
+    var email = req.body.email;
+    var password = req.body.password;
+    var role = req.body.role;
+
+    // supply the 5 parameters retrieved by the caller of the web service
+    User.addUser(username, fullname, email, password, role, (err, result) => {
+        if (!err) {
+            // send the result back to the user 
+            res.status(201).send({"User added with these data": result});
+        }
+        // there is an error 
+        else {
+            // if statement to check whether the username or email provided already exist (check if there is any duplicates)
+            // if error code = 23505, send the error result 
+            if (err.code == "23505") {
+                res.status(422).send("{\"Result\":\"username or email provided already exists\"}")
+            }
+            else {
+                // else the error is unknown
+                res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+            }
+        }
+    });
 });
 
 // PUT method
-// to update user by its userid in the database
-app.put('/users/:id', async (req, res, next) => {
+// to add user address into the database
+app.put('/users/:id/address', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    var address = req.body.address;
+    var userid = req.params.id;
+
+    // supply the 2 parameters retrieved by the caller of the web service
+    User.addUserAddress(address, userid, (err, result) => {
+        if (!err) {
+            // send the result back to the user 
+            res.status(201).send({"User address added with these data": result});
+        }
+        // there is an error 
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+        }
+    });
+});
+
+// PUT method
+// to update a single user by the userid
+app.put('/users/:id/', (req, res) => {
     // retrieve from the req body msg the parameters that will be passing over
     const username = req.body.username;
     const fullname = req.body.fullname;
@@ -105,42 +174,43 @@ app.put('/users/:id', async (req, res, next) => {
     const userid = req.params.id;
 
     // supply the 5 parameters retrieved by the caller of the web service
-    return updateUser(username, fullname, email, address, userid)
-    .then((result) => res.status(201).json(result))
-    .catch(next);
+    User.updateUser(username, fullname, email, address, userid, (err, result) => {
+        // if there is no error
+        if (!err) {
+            if (result == 0) {
+                res.status(422).send("{\"Result\":\"New username or email provided already exists\"}")
+            }
+            else {
+                // set status code, send result back
+                res.status(200).send("User details updated with " + result + " row(s) affected");
+            }
+        }
+        // there is an error 
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+        }
+    });
 });
 
 // PUT method
-// to rest user password by its userid in the database
-app.put('/users/:id/resetPassword', async (req, res, next) => {
+// to rest user password by the userid in the database
+app.put('/users/:id/resetPassword', (req, res) => {
     // retrieve from the req body msg the parameters that will be passing over
     const password = req.body.password;
     const userid = req.params.id;
 
-    // supply the 2 parameters retrieved by the caller of the web service
-    return updateUserPw(password, userid)
-    .then(() => res.status(200).send("Password has been reset successfully!"))
-    .catch(next);
-});
-
-// GET method
-// to get a user by its userid from the database
-app.get('/users/:id', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const userid = req.params.id;
-
-    // supply the 1 parameter retrieved by the caller of the web service
-    return getUserById(userid)
-    .then((result) => res.status(200).json(result))
-    .catch(next);
-});
-
-// GET method
-// to get all users in the users table from the database
-app.get('/users', async (req, res, next) => {
-    return getUsers()
-    .then((result) => res.status(200).json(result))
-    .catch(next);
+    // supply the 5 parameters retrieved by the caller of the web service
+    User.updateUserPw(password, userid, (err, result) => {
+        // if there is no error
+        if (!err) {
+            // set status code, send result back
+            res.status(200).send("User password is updated successfully with " + result + " row affected");
+        }
+        // there is an error 
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+        }
+    });
 });
 
 // DELETE method 
@@ -150,7 +220,7 @@ app.delete('/users/:id', async (req, res, next) => {
     const userid = req.params.id;
 
     // supply the 1 parameter retrieved by the caller of the web service
-    return deleteUser(userid)
+    User.deleteUser(userid)
     .then(() => res.status(200).send("User is successfully deleted"))
     .catch(next);
 });
@@ -162,8 +232,6 @@ app.delete('/userTable', async (req, res, next) => {
     .then(() => res.status(201).send("Test table dropped successfully!"))
     .catch(next);
 });
-
-
 /////////////////////////////////////
 // END OF SECTION FOR USERS DATABASE
 /////////////////////////////////////
