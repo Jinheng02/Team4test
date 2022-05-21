@@ -2,7 +2,7 @@ const pool = require("../dbConnection");
 
 const CREATE_CARTS_TABLE = `
 CREATE TABLE carts (
-    cart_id serial primary key,
+    cartid SERIAL primary key,
 )
 `
 const ALTER_CARTS_TABLE = `
