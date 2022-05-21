@@ -372,12 +372,12 @@ app.put('/products/:id', async (req, res, next) => {
     .catch(next);
 });
 
-// delete products table
-app.put('/productTable', async (req, res, next) => {
-    return alterProductTable()
-    .then(() => res.status(201).send(`Product table altered!`))
-    .catch(next);
-});
+// alter products table
+// app.post('/productTableAlter', async (req, res, next) => {
+//     return alterProductTable()
+//     .then(() => res.status(201).send(`Product table altered!`))
+//     .catch(next);
+// });
 
 // delete products table
 app.delete('/productTable', async (req, res, next) => {
