@@ -28,24 +28,6 @@ module.exports.createOrdersTable = function createOrdersTable() {
         })
 };
 
-// to drop/delete orders table 
-module.exports.deleteOrdersTable = function deleteOrdersTable(){
-    return pool.query(DROP_TABLE_SQL)
-        .then(() => {
-            console.log("Orders table deleted!");
-        }).catch((err) => {
-            console.log(err);
-        })
-};
-
-//alter table for foreign key
-module.exports.alterOrdersTable = function alterOrdersTable() {
-    return pool.query(ALTER_ORDERS_TABLE)
-        .then(() => console.log("Orders Table altered!"))
-        .catch((error) => {
-            console.log(error);
-        });
-};
 
 // get all orders from database method
 module.exports.getOrders = function getOrders() {
@@ -65,3 +47,23 @@ module.exports.addOrder = function addOrder(userid, total) {
             console.log(error);
         });
 };
+
+// to drop/delete orders table 
+module.exports.deleteOrdersTable = function deleteOrdersTable(){
+    return pool.query(DROP_TABLE_SQL)
+        .then(() => {
+            console.log("Orders table deleted!");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
+//alter table for foreign key
+module.exports.alterOrdersTable = function alterOrdersTable() {
+    return pool.query(ALTER_ORDERS_TABLE)
+        .then(() => console.log("Orders Table altered!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
