@@ -2,7 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 // for user database
-const { createUsersTable, addUser, updateUser, updateUserPw, getUserById, getUsers, deleteUser, dropUsersTable } = require("../model/user");
+const { createUsersTable, dropUsersTable } = require("../model/user");
+const User = require("../model/user");
 // for product database
 const { createProductTable, 
     addProduct, 
@@ -68,82 +69,19 @@ app.post('/ordersTable', async (req, res, next) => {
 // THIS SECTION IS FOR THE USERS DATABASE
 /////////////////////////////////////////
 
-// POST method
-// to add new user to the database
-app.post('/newUser', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const username = req.body.username;
-    const fullname = req.body.fullname;
-    const email = req.body.email;
-    const password = req.body.password;
-    const address = req.body.address;
-    const role = req.body.role;
-
-    // supply the 6 parameters retrieved by the caller of the web service
-    return addUser(username, fullname, email, password, address, role)
-    .then((result) => res.status(201).json(result))
-    .catch(next);
-});
-
-// PUT method
-// to update user by its userid in the database
-app.put('/users/:id', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const username = req.body.username;
-    const fullname = req.body.fullname;
-    const email = req.body.email;
-    const address = req.body.address;
-    const userid = req.params.id;
-
-    // supply the 5 parameters retrieved by the caller of the web service
-    return updateUser(username, fullname, email, address, userid)
-    .then((result) => res.status(201).json(result))
-    .catch(next);
-});
-
-// PUT method
-// to rest user password by its userid in the database
-app.put('/users/:id/resetPassword', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const password = req.body.password;
-    const userid = req.params.id;
-
-    // supply the 2 parameters retrieved by the caller of the web service
-    return updateUserPw(password, userid)
-    .then(() => res.status(200).send("Password has been reset successfully!"))
-    .catch(next);
-});
-
-// GET method
-// to get a user by its userid from the database
-app.get('/users/:id', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const userid = req.params.id;
-
-    // supply the 1 parameter retrieved by the caller of the web service
-    return getUserById(userid)
-    .then((result) => res.status(200).json(result))
-    .catch(next);
-});
-
-// GET method
-// to get all users in the users table from the database
-app.get('/users', async (req, res, next) => {
-    return getUsers()
-    .then((result) => res.status(200).json(result))
-    .catch(next);
-});
-
-// DELETE method 
-// to delete a user by its userid in the database
-app.delete('/users/:id', async (req, res, next) => {
-    // retrieve from the req body msg the parameters that will be passing over
-    const userid = req.params.id;
-
-    // supply the 1 parameter retrieved by the caller of the web service
-    return deleteUser(userid)
-    .then(() => res.status(200).send("User is successfully deleted"))
-    .catch(next);
+// to get all users in the database
+app.get('/users/', (req, res) => {
+    // retrieve users from the database
+    User.getUsers((error, result) => {
+        // if there is no error, send back the result
+        if (!error) {
+            res.status(200).send(result);
+        }
+        // there is an error
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}");
+        }
+    });
 });
 
 // DELETE method
