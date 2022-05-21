@@ -3,9 +3,10 @@ const pool = require("../dbConnection");
 const CREATE_ORDERS_TABLE = `
     CREATE TABLE orders (
         order_id SERIAL primary key,
-        user_id INT NOT NULL,
+        userid INT NOT NULL,
         total DECIMAL(8, 2) NOT NULL,
         date TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+        FOREIGN KEY (userid) REFERENCES users(userid)
     )
 `
 
