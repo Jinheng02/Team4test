@@ -118,6 +118,26 @@ const User = {
             throw error;
         });
     },   //-- end of deleteUser method
+    // the verifyUser method
+    verifyUser: function (username, password, callback) {
+        const verifyUserQuery = `SELECT * FROM users WHERE username = $1 AND password = $2`;
+        pool.query(verifyUserQuery, [username, password], (error, result) => {
+            // there is an error
+            if (error) {
+                // error, no result
+                return callback(error, null);
+            }
+            if (result.rows == 0) {
+                return callback(null, null);
+            } 
+            // no error, there is result
+            else {
+                const user = result.rows[0];
+                // no error, return user result retrieved
+                return callback(null, user)
+            }
+        });
+    }   //-- end of verifyUser method
 }
 
 // export the User object so that it can be used by the controller layer when the web service is being called

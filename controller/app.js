@@ -1,6 +1,9 @@
 // includes
 const express = require('express');
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = require("../config");
+const isLoggedInMiddleware = require("../auth/isLoggedInMiddleware");
 // for user database
 const { createUsersTable, dropUsersTable } = require("../model/user");
 const User = require("../model/user");
@@ -152,16 +155,27 @@ app.post('/users/', (req, res) => {
 
 // PUT method
 // to add user address into the database
-app.put('/users/:id/address', (req, res) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+// tested this
+app.put('/users/:id/address', isLoggedInMiddleware, (req, res) => {
+    const userid = parseInt(req.params.id);
+    if (isNaN(userid)) {
+        res.status(400).send();
+    }
+    // if userid in decoded token do not match the userid in the request params
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (userid !== req.decodedToken.userid) {
+        res.status(403).send();
+        return;
+    }
     // retrieve from the req body msg the parameters that will be passing over
     var address = req.body.address;
-    var userid = req.params.id;
 
     // supply the 2 parameters retrieved by the caller of the web service
     User.addUserAddress(address, userid, (err, result) => {
         if (!err) {
             // send the result back to the user 
-            res.status(201).send({"User address added with these data": result});
+            res.status(200).send({"User address added with these data": result});
         }
         // there is an error 
         else {
@@ -172,13 +186,25 @@ app.put('/users/:id/address', (req, res) => {
 
 // PUT method
 // to update a single user by the userid
-app.put('/users/:id/', (req, res) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+// tested this
+app.put('/users/:id/', isLoggedInMiddleware, (req, res) => {
+    const userid = parseInt(req.params.id);
+    if (isNaN(userid)) {
+        res.status(400).send();
+    }
+    // if userid in decoded token do not match the userid in the request params
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (userid !== req.decodedToken.userid) {
+        res.status(403).send();
+        return;
+    }
     // retrieve from the req body msg the parameters that will be passing over
     const username = req.body.username;
     const fullname = req.body.fullname;
     const email = req.body.email;
     const address = req.body.address;
-    const userid = req.params.id;
+    
 
     // supply the 5 parameters retrieved by the caller of the web service
     User.updateUser(username, fullname, email, address, userid, (err, result) => {
@@ -201,10 +227,21 @@ app.put('/users/:id/', (req, res) => {
 
 // PUT method
 // to rest user password by the userid in the database
-app.put('/users/:id/resetPassword', (req, res) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+// tested this
+app.put('/users/:id/resetPassword', isLoggedInMiddleware, (req, res) => {
+    const userid = parseInt(req.params.id);
+    if (isNaN(userid)) {
+        res.status(400).send();
+    }
+    // if userid in decoded token do not match the userid in the request params
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (userid !== req.decodedToken.userid) {
+        res.status(403).send();
+        return;
+    }
     // retrieve from the req body msg the parameters that will be passing over
     const password = req.body.password;
-    const userid = req.params.id;
 
     // supply the 5 parameters retrieved by the caller of the web service
     User.updateUserPw(password, userid, (err, result) => {
@@ -215,21 +252,63 @@ app.put('/users/:id/resetPassword', (req, res) => {
         }
         // there is an error 
         else {
-            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}");
         }
     });
 });
 
 // DELETE method 
 // to delete a user by its userid in the database
-app.delete('/users/:id', async (req, res, next) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+// tested this
+app.delete('/users/:id', isLoggedInMiddleware, async (req, res, next) => {
+    const userid = parseInt(req.params.id);
+    if (isNaN(userid)) {
+        res.status(400).send();
+    }
+    // if userid in decoded token do not match the userid in the request params
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (userid !== req.decodedToken.userid) {
+        res.status(403).send();
+        return;
+    }
     // retrieve from the req body msg the parameters that will be passing over
-    const userid = req.params.id;
 
     // supply the 1 parameter retrieved by the caller of the web service
     User.deleteUser(userid)
     .then(() => res.status(200).send("User is successfully deleted"))
     .catch(next);
+});
+
+// POST method
+// for login of user
+app.post('/login/', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    var username = req.body.username;
+    var password = req.body.password;
+
+    // supply the 2 parameter retrieved by the caller of the web service
+    User.verifyUser(username, password, (error, result) => {
+        // there is an error
+        if (error) {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}");
+        }
+        // if there is no user result returned
+        if (result == null) {
+            res.status(401).send();
+        }
+        const payload = { userid: result.userid, role: result.role };
+        jwt.sign(payload, JWT_SECRET, { algorithm: "HS256" }, (error, token) => {
+            // error
+            // send 401 unauthorized when the login fails
+            if (error) {
+                res.status(401).send();
+                return;
+            }
+            // else send the JWT and the userid
+            res.status(200).send({ token: token, userid: result.userid, role: result.role });
+        });
+    });
 });
 
 // DELETE method
