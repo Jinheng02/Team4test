@@ -30,7 +30,7 @@ const { createCategoryTable,
 const { createCartTable } = require('../model/cart');
 
 // for orders database
-const { createOrdersTable, addOrder, deleteOrdersTable } = require("../model/order");
+const { createOrdersTable, addOrder, deleteOrdersTable, alterOrdersTable } = require("../model/order");
 const { addCartItem } = require('../model/cart');
 
 // to display what port is server running on
@@ -449,6 +449,13 @@ app.delete('/categoryTable', async (req, res, next) => {
 /////////////////////////////////////////////
 // THIS SECTION IS FOR THE ORDERS DATABASE
 /////////////////////////////////////////////
+
+//alter orders table to add Foreign Key
+app.post('/ordersTableAlter', async (req, res, next) => {
+    return alterOrdersTable()
+    .then(() => res.status(201).send(`Product table altered!`))
+    .catch(next);
+});
 
 //delete orders table
 app.delete('/ordersTable', async (req, res, next) => {

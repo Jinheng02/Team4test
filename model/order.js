@@ -8,10 +8,15 @@ const CREATE_ORDERS_TABLE = `
         date TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
     )
 `
-// FOREIGN KEY (userid) REFERENCES users(userid)
+
 
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS orders;
+`
+
+const ALTER_ORDERS_TABLE = `
+    ALTER TABLE orders
+    ADD FOREIGN KEY (userid) REFERENCES users(userid);
 `
 
 // to create orders table 
@@ -32,6 +37,15 @@ module.exports.deleteOrdersTable = function deleteOrdersTable(){
         }).catch((err) => {
             console.log(err);
         })
+};
+
+//alter table for foreign key
+module.exports.alterOrdersTable = function alterOrdersTable() {
+    return pool.query(ALTER_ORDERS_TABLE)
+        .then(() => console.log("Table altered!"))
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 
