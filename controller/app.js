@@ -522,25 +522,6 @@ app.post('/users/cart/cartitem', async (req, res, next) => {
 /////////////////////////////////////
 
 
-/////////////////////////////////////////////
-// THIS SECTION IS FOR THE PRODUCTS DATABASE
-/////////////////////////////////////////////
-
-// to add new product to the products database
-app.post('/product', async (req, res, next) => {
-    const name = req.body.name;
-    const price = req.body.price;
-    const desc = req.body.desc;
-
-    return addProduct(name, price, desc)
-    .then(() => res.status(201).send("New Records Inserted!"))
-    .catch(next);
-});
-////////////////////////////////////////
-// END OF SECTION FOR PRODUCTS DATABASE
-////////////////////////////////////////
-
-
 ////////////////////////////////////////
 // THIS SECTION IS FOR THE CART DATABASE
 ////////////////////////////////////////
