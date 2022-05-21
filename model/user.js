@@ -53,9 +53,9 @@ const User = {
             }
         });
     },  //-- end of getUsersById method
-    addUser: function(username, fullname, email, password, address, role, callback) {
-        const addUserQuery = `INSERT INTO users (username, fullname, email, password, address, role) VALUES($1, $2, $3, $4, $5, $6) RETURNING userid, username, fullname, email, role, created_at`;
-        pool.query(addUserQuery, [username, fullname, email, password, address, role], (error, result) => {
+    addUser: function(username, fullname, email, password, role, callback) {
+        const addUserQuery = `INSERT INTO users (username, fullname, email, password, role) VALUES($1, $2, $3, $4, $5) RETURNING userid, username, fullname, email, role, created_at`;
+        pool.query(addUserQuery, [username, fullname, email, password, role], (error, result) => {
             if (error) {
                 // return the error 
                 return callback(error, null);
@@ -67,6 +67,21 @@ const User = {
             }
         });
     },  //-- end of addUser method
+    addUserAddress: function(address, userid, callback) {
+        const addUserAddressQuery = `UPDATE users SET address = $1 WHERE userid = $2  RETURNING address, userid`;
+        pool.query(addUserAddressQuery, [address, userid], (error, result) => {
+            if (error) {
+                // return the error 
+                console.log(error);
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rows[0]);
+            }
+        });
+    },  //-- end of addUserAddress
     // to update a single user by the id
     updateUser: function(username, fullname, email, address, userid, callback) {
         const updateUserQuery = `UPDATE users SET username = $1, fullname = $2, email = $3, address = $4 WHERE userid = $5 RETURNING username, fullname, email, address`;

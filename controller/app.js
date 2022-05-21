@@ -111,11 +111,10 @@ app.post('/users/', (req, res) => {
     var fullname = req.body.fullname;
     var email = req.body.email;
     var password = req.body.password;
-    var address = req.body.address;
     var role = req.body.role;
 
-    // supply the 6 parameters retrieved by the caller of the web service
-    User.addUser(username, fullname, email, password, address, role, (err, result) => {
+    // supply the 5 parameters retrieved by the caller of the web service
+    User.addUser(username, fullname, email, password, role, (err, result) => {
         if (!err) {
             // send the result back to the user 
             res.status(201).send({"User added with these data": result});
@@ -131,6 +130,26 @@ app.post('/users/', (req, res) => {
                 // else the error is unknown
                 res.status(500).send("{\"Result\":\"Internal Server Error\"}")
             }
+        }
+    });
+});
+
+// PUT method
+// to add user address into the database
+app.put('/users/:id/address', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    var address = req.body.address;
+    var userid = req.params.id;
+
+    // supply the 2 parameters retrieved by the caller of the web service
+    User.addUserAddress(address, userid, (err, result) => {
+        if (!err) {
+            // send the result back to the user 
+            res.status(201).send({"User address added with these data": result});
+        }
+        // there is an error 
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
         }
     });
 });
