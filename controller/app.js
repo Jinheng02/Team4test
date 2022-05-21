@@ -30,7 +30,12 @@ const { createCategoryTable,
 const { addCartItem, createCartsTable } = require('../model/cart');
 
 // for orders database
-const { createOrdersTable, addOrder, deleteOrdersTable, alterOrdersTable } = require("../model/order");
+const { createOrdersTable, 
+     deleteOrdersTable, 
+     alterOrdersTable,
+     getOrders,
+     addOrder,
+ } = require("../model/order");
 //const { createProductTable, addProduct } = require("../model/product");
 
 
@@ -450,6 +455,24 @@ app.delete('/categoryTable', async (req, res, next) => {
 /////////////////////////////////////////////
 // THIS SECTION IS FOR THE ORDERS DATABASE
 /////////////////////////////////////////////
+
+//get all orders from orders table
+app.get('/orders', async (req, res, next) => {
+    return getOrders()
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// add new order to orders table
+app.post('/products', async (req, res, next) => {
+    // retreive from the req body that is passed over
+    const userid = req.body.userid;
+    const total = req.body.total;
+
+    return addProduct(userid, total)
+    .then(() => res.status(201).send("New Product Inserted!"))
+    .catch(next);
+});
 
 //alter orders table to add Foreign Key
 app.put('/ordersTableAlter', async (req, res, next) => {

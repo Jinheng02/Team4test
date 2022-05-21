@@ -47,10 +47,20 @@ module.exports.alterOrdersTable = function alterOrdersTable() {
         });
 };
 
+// get all orders from database method
+module.exports.getOrders = function getOrders() {
+    return pool.query(`SELECT * FROM orders`)
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
 
-module.exports.addOrder = function addOrder(user_id, amount, total, payment_method, checkout_status, ref) {
-    return pool.query(`INSERT INTO orders (user_id, amount, total, payment_method, checkout_status, ref) VALUES($1, $2, $3, $4, 'complete', $5) RETURNING *`, [user_id, amount, total, payment_method, checkout_status, ref])
-        .then(() => console.log("New Order Records Inserted!"))
+// update orders database method
+module.exports.addOrder = function addOrder(userid, total) {
+    return pool.query(`INSERT INTO products (userid, name) VALUES($1, $2) RETURNING *`,
+        [userid, total])
+        .then(() => console.log("Orders Inserted!"))
         .catch((error) => {
             console.log(error);
         });
