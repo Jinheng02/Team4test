@@ -30,7 +30,7 @@ const { createCategoryTable,
 const { createCartTable } = require('../model/cart');
 
 // for orders database
-const { createOrdersTable, addOrder } = require("../model/order");
+const { createOrdersTable, addOrder, deleteOrdersTable } = require("../model/order");
 const { addCartItem } = require('../model/cart');
 
 // to display what port is server running on
@@ -450,17 +450,25 @@ app.delete('/categoryTable', async (req, res, next) => {
 // THIS SECTION IS FOR THE ORDERS DATABASE
 /////////////////////////////////////////////
 
-//add new order to the orders table
-app.post('/newOrder', async (req, res, next) => {
-    const amount = req.body.amount;
-    const total = req.body.total;
-    const paymentMethod = req.body.paymentMethod;
-    const ref = req.body.ref; 
-
-    return addOrder(user_id, amount, total, paymentMethod, checkout_status, ref)
-    .then(() => res.status(201).send("New Records Inserted!"))
+//delete orders table
+app.delete('/ordersTable', async (req, res, next) => {
+    return deleteOrdersTable()
+    .then(() => res.status(201).send(`Orders table dropped!`))
     .catch(next);
 });
+
+
+//add new order to the orders table
+// app.post('/newOrder', async (req, res, next) => {
+//     const amount = req.body.amount;
+//     const total = req.body.total;
+//     const paymentMethod = req.body.paymentMethod;
+//     const ref = req.body.ref; 
+
+//     return addOrder(user_id, amount, total, paymentMethod, checkout_status, ref)
+//     .then(() => res.status(201).send("New Records Inserted!"))
+//     .catch(next);
+// });
 
 ////////////////////////////////////////
 // END OF SECTION FOR ORDERS DATABASE
