@@ -7,7 +7,7 @@ const CREATE_PRODUCT_TABLE = `
         price DECIMAL(6,2) NOT NULL,
         description VARCHAR(255) NOT NULL,
         image_url VARCHAR(100) NULL,
-        category_id INT NOT NULL
+        category_id INT FOREIGN KEY REFERENCES category(category_id)
     )
 `
 
@@ -19,7 +19,7 @@ const DROP_TABLE_SQL = `
 module.exports.createProductTable = function createProductTable(){
     return pool.query(CREATE_PRODUCT_TABLE)
         .then(() => {
-            console.log("Products table created");
+            console.log("Products table created!");
         }).catch((err) => {
             console.log(err);
         })
@@ -78,3 +78,4 @@ module.exports.updateProduct = function updateProduct(name, price, desc, image_u
             console.log(error);
         });
 };
+
