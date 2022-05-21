@@ -123,8 +123,8 @@ app.post('/users/', (req, res) => {
         // there is an error 
         else {
             // if statement to check whether the username or email provided already exist (check if there is any duplicates)
-            // if error code = POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT, send the error result 
-            if (err.code == "POSTGRES_ERROR_CODE.UNIQUE_CONSTRAINT") {
+            // if error code = 23505, send the error result 
+            if (err.code == "23505") {
                 res.status(422).send("{\"Result\":\"username or email provided already exists\"}")
             }
             else {
