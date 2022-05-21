@@ -69,6 +69,7 @@ app.post('/ordersTable', async (req, res, next) => {
 // THIS SECTION IS FOR THE USERS DATABASE
 /////////////////////////////////////////
 
+// GET method
 // to get all users in the database
 app.get('/users/', (req, res) => {
     // retrieve users from the database
@@ -79,6 +80,24 @@ app.get('/users/', (req, res) => {
         }
         // there is an error
         else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}");
+        }
+    });
+});
+
+// GET method
+// to retrive the data of a single user based on their id
+app.get('/users/:id/', (req, res) => {
+    // retrieve the id of the user we want to retrieve from the database
+    var userid = req.params.id;
+    User.getUserById(userid, (err, result) => {
+        // if there is no error, send back the result 
+        if (!err) {
+            res.status(200).send(result);
+        }
+        // there is an error 
+        else {
+            // provide some json data msg to signify some error 
             res.status(500).send("{\"Result\":\"Internal Server Error\"}");
         }
     });

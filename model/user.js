@@ -5,9 +5,6 @@
 // import dbConnection
 const pool = require("../dbConnection");
 
-// import http-errors module
-const createdHttpError = require('http-errors');
-
 // query to create the users table
 const CREATE_USERS_TABLE = `
     CREATE TABLE users  (
@@ -32,14 +29,32 @@ const User = {
         const getAllUsersQuery = `SELECT userid, username, fullname, email, role FROM users`;
         pool.query(getAllUsersQuery, (error, result) => {
             if (error) {
+                // return the error 
                 return callback(error, null);
             }
             // no error
             else {
+                // return the results with all the users
+                return callback(null, result.rows);
+            }
+        });
+    },   //-- end of getUsers method
+    getUserById: function (userid, callback) {
+        const getUserByIdQuery = `SELECT userid, username, fullname, email, address, role FROM users WHERE userid = $1`;
+        pool.query(getUserByIdQuery, [userid], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results with all the users
                 return callback(null, result.rows);
             }
         })
-    }
+    },  //-- end of getUsersById method
 }
 
+// export the User object so that it can be used by the controller layer when the web service is being called
+// call the function to retrieve the result 
 module.exports = User;
