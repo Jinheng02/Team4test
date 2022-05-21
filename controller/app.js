@@ -135,6 +135,35 @@ app.post('/users/', (req, res) => {
     });
 });
 
+// PUT method
+// to update a single user by the userid
+app.put('/users/:id/', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    const username = req.body.username;
+    const fullname = req.body.fullname;
+    const email = req.body.email;
+    const address = req.body.address;
+    const userid = req.params.id;
+
+    // supply the 5 parameters retrieved by the caller of the web service
+    User.updateUser(username, fullname, email, address, userid, (err, result) => {
+        // if there is no error
+        if (!err) {
+            if (result == 0) {
+                res.status(422).send("{\"Result\":\"New username or email provided already exists\"}")
+            }
+            else {
+                // set status code, send result back
+                res.status(200).send("User details updated with " + result + " row(s) affected");
+            }
+        }
+        // there is an error 
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+        }
+    });
+});
+
 // DELETE method
 // to drop the user table in the database
 app.delete('/userTable', async (req, res, next) => {

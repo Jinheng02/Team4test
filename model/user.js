@@ -5,23 +5,23 @@
 // import dbConnection
 const pool = require("../dbConnection");
 
-// query to create the users table
-const CREATE_USERS_TABLE = `
-    CREATE TABLE users  (
-        userid SERIAL NOT NULL PRIMARY KEY,
-        username VARCHAR(50) UNIQUE NOT NULL,
-        fullname VARCHAR(100) NOT NULL,
-        email VARCHAR(100) NOT NULL UNIQUE,
-        password VARCHAR(100) NOT NULL,
-        address VARCHAR(200),
-        role VARCHAR(45) NOT NULL,
-        created_at TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
-    );
-`
-// query to drop the users table
-const DROP_USERS_TABLE = `
-    DROP TABLE IF EXISTS users;
-`
+// // query to create the users table
+// const CREATE_USERS_TABLE = `
+//     CREATE TABLE users  (
+//         userid SERIAL NOT NULL PRIMARY KEY,
+//         username VARCHAR(50) UNIQUE NOT NULL,
+//         fullname VARCHAR(100) NOT NULL,
+//         email VARCHAR(100) NOT NULL UNIQUE,
+//         password VARCHAR(100) NOT NULL,
+//         address VARCHAR(200),
+//         role VARCHAR(45) NOT NULL,
+//         created_at TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+//     );
+// `
+// // query to drop the users table
+// const DROP_USERS_TABLE = `
+//     DROP TABLE IF EXISTS users;
+// `
 
 const User = {
     // get all the users in the database method 
@@ -67,6 +67,21 @@ const User = {
             }
         });
     },  //-- end of addUser method
+    // to update a single user by the id
+    updateUser: function(username, fullname, email, address, userid, callback) {
+        const updateUserQuery = `UPDATE users SET username = $1, fullname = $2, email = $3, address = $4 WHERE userid = $5 RETURNING username, fullname, email, address`;
+        pool.query(updateUserQuery, [username, fullname, email, address, userid], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rowCount);
+            }
+        })
+    },   //-- end of addUser method
 }
 
 // export the User object so that it can be used by the controller layer when the web service is being called
