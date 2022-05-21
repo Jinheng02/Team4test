@@ -6,9 +6,9 @@ const CREATE_ORDERS_TABLE = `
         userid INT NOT NULL,
         total DECIMAL(8, 2) NOT NULL,
         date TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
-        FOREIGN KEY (userid) REFERENCES users(userid)
     )
 `
+// FOREIGN KEY (userid) REFERENCES users(userid)
 
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS orders;
