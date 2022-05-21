@@ -1,7 +1,7 @@
 const pool = require("../dbConnection");
 
-const CREATE_CART_TABLE = `
-CREATE TABLE cart (
+const CREATE_CARTS_TABLE = `
+CREATE TABLE carts (
     cart_id SERIAL primary key,
     user_id int
 )
@@ -15,10 +15,11 @@ CREATE TABLE cartItem (
 )`
 
 // To create cart table
-module.exports.createCartTable = function createCartTable(){
-    return pool.query(CREATE_CART_TABLE)
+
+module.exports.createCartsTable = function createCartsTable() {
+    return pool.query(CREATE_CARTS_TABLE)
         .then(() => {
-            console.log("Cart table created!");
+            console.log("Carts table created!");
         }).catch((err) => {
             console.log(err);
         })
@@ -32,8 +33,9 @@ module.exports.addCart = function addCart(cart_id, user_id) {
             console.log(error);
         });
 };
-/////////////////////// CART ITEM ////////////////////////
 
+
+/////////////////////// CART ITEM ////////////////////////
 // create cart item table
 module.exports.createCartItemTable = function createCartItemTable() {
     return pool.query(CREATE_CART_ITEM_TABLE)
@@ -51,8 +53,17 @@ module.exports.createCartItemTable = function createCartItemTable() {
         })
 }
 
+// Get cart items
+module.exports.getCartItems = function getCartItems() {
+    return pool.query(`SELECT  from cartItems`)
+        .then((response) => response.rows)
+        .catch((error) => {
+            throw error;
+        });
+};
+
 // Add new cart item
-module.exports.addCartItem = function addCartItem(id, cart_id, product_id) {
+module.exports.addCartItem = function addCartItem(id, cart_id, product_id, quantity) {
     return pool.query(`INSERT INTO cartItem (id, cart_id, product_id, quantity) VALUES($1, $2, $3, $4) RETURNING *`, [id, cart_id, product_id, quantity])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
