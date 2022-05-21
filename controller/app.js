@@ -470,7 +470,7 @@ app.post('/orders', async (req, res, next) => {
     const total = req.body.total;
 
     return addOrder(userid, total)
-    .then(() => res.status(201).send("New Product Inserted!"))
+    .then(() => res.status(201).send("New Order Inserted!"))
     .catch(next);
 });
 
