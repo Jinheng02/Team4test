@@ -32,9 +32,9 @@ module.exports.deleteCategoryTable = function deleteCategoryTable(){
 };
 
 // Add categories
-module.exports.addCategory = function addCategory(category_id, category_name) {
-    return pool.query(`INSERT INTO products (category_id, category_name) VALUES($1, $2) RETURNING *`,
-        [category_id, category_name])
+module.exports.addCategory = function addCategory(category_name) {
+    return pool.query(`INSERT INTO categories (category_name) VALUES($1) RETURNING *`,
+        [category_name])
         .then(() => console.log("Category Inserted!"))
         .catch((error) => {
             console.log(error);
@@ -44,6 +44,15 @@ module.exports.addCategory = function addCategory(category_id, category_name) {
 // Get Categories
 module.exports.getCategory = function getCategory() {
     return pool.query(`SELECT * FROM categories`)
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// Get Categories
+module.exports.getCategoryById = function getCategoryById(categoryid) {
+    return pool.query(`SELECT * FROM categories where category_id = ` + categoryid)
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);

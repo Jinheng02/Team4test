@@ -7,8 +7,13 @@ const CREATE_PRODUCT_TABLE = `
         price DECIMAL(6,2) NOT NULL,
         description VARCHAR(255) NOT NULL,
         image_url VARCHAR(100) NULL,
-        category_id INT FOREIGN KEY REFERENCES category(category_id)
+        category_id INT NOT NULL
     )
+`
+
+const ALTER_PRODUCT_TABLE = `
+    ALTER TABLE products
+    ADD FOREIGN KEY (category_id) REFERENCES categories(category_id);
 `
 
 const DROP_TABLE_SQL = `
@@ -74,6 +79,15 @@ module.exports.updateProduct = function updateProduct(name, price, desc, image_u
         WHERE product_id = $6 RETURNING *`,
         [name, price, desc, image_url, category_id, product_id])
         .then(() => console.log("Records Updated!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// Update Product
+module.exports.alterProductTable = function alterProductTable() {
+    return pool.query(ALTER_PRODUCT_TABLE)
+        .then(() => console.log("Table altered!"))
         .catch((error) => {
             console.log(error);
         });

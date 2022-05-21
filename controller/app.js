@@ -13,15 +13,16 @@ const { createProductTable,
     deleteProductTable, 
     getProduct, 
     getProductById, 
-    updateProduct
+    updateProduct,
+    alterProductTable
 } = require("../model/product");
 
 // for categories database
 const { createCategoryTable, 
     addCategory, 
-    deleteCategorytTable, 
+    deleteCategoryTable, 
     getCategory,
-    deleteCategoryTable
+    getCategoryById
 } = require("../model/category");
 
 
@@ -63,6 +64,13 @@ app.post('/userTable', async (req, res, next) => {
 app.post('/productTable', async (req, res, next) => {
     return createProductTable()
     .then(() => res.status(201).send("Product table created!"))
+    .catch(next);
+});
+
+// to create the categories table
+app.post('/categoryTable', async (req, res, next) => {
+    return createCategoryTable()
+    .then(() => res.status(201).send("Category table created!"))
     .catch(next);
 });
 
@@ -365,6 +373,13 @@ app.put('/products/:id', async (req, res, next) => {
 });
 
 // delete products table
+app.put('/productTable', async (req, res, next) => {
+    return alterProductTable()
+    .then(() => res.status(201).send(`Product table altered!`))
+    .catch(next);
+});
+
+// delete products table
 app.delete('/productTable', async (req, res, next) => {
     return deleteProductTable()
     .then(() => res.status(201).send(`Product table dropped!`))
@@ -382,10 +397,9 @@ app.delete('/productTable', async (req, res, next) => {
 
 // to add new category to the categories database
 app.post('/category', async (req, res, next) => {
-    const categoryid = req.body.categoryid;
     const categoryName = req.body.categoryName;
 
-    return addCategory(categoryid, categoryName)
+    return addCategory(categoryName)
     .then(() => res.status(201).send("New Category Inserted!"))
     .catch(next);
 });
