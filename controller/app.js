@@ -34,7 +34,7 @@ const { createOrdersTable,
      deleteOrdersTable, 
      alterOrdersTable,
      getOrders,
-     addOrder,
+     addOrders,
  } = require("../model/order");
 //const { createProductTable, addProduct } = require("../model/product");
 
@@ -466,16 +466,11 @@ app.get('/orders', async (req, res, next) => {
 // add new order to orders table
 app.post('/orders', async (req, res, next) => {
     // retreive from the req body that is passed over
-    const userid = req.body.userid;
+    const userid = parseInt(req.body.userid);
     const total = req.body.total;
 
-    let items 
-    items += total
-    items += userid
-    console.log(items)
-
-    return addOrder(userid, total)
-    .then(() => res.status(201).send("New Order Inserted!"))
+    return addOrders(userid, total)
+    .then((result) => res.status(201).send(result))
     .catch(next);
 });
 

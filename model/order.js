@@ -39,10 +39,10 @@ module.exports.getOrders = function getOrders() {
 };
 
 // insert new order database method
-module.exports.addOrder = function addOrder(userid, total) {
+module.exports.addOrders = function addOrders(userid, total) {
     return pool.query(`INSERT INTO orders (userid, total) VALUES($1, $2) RETURNING *`,
         [userid, total])
-        .then(() => console.log("Orders Inserted!"))
+        .then(() => console.log("Records Inserted!"))
         .catch((error) => {
             console.log(error);
         });
