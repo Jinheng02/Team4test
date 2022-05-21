@@ -32,7 +32,7 @@ const { createCartTable } = require('../model/cart');
 // for orders database
 const { createOrdersTable, addOrder, deleteOrdersTable, alterOrdersTable } = require("../model/order");
 const { addCartItem } = require('../model/cart');
-const { createProductTable, addProduct } = require("../model/product");
+//const { createProductTable, addProduct } = require("../model/product");
 const { addCartItem, createCartsTable } = require('../model/cart');
 
 // to display what port is server running on
