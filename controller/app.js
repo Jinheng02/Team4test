@@ -63,10 +63,17 @@ app.post('/productTable', async (req, res, next) => {
     .catch(next);
 });
 
+// to create the products table
+app.post('/categoryTable', async (req, res, next) => {
+    return createProductTable()
+    .then(() => res.status(201).send("Category table created!"))
+    .catch(next);
+});
+
 // to create the orders table
 app.post('/ordersTable', async (req, res, next) => {
     return createOrdersTable()
-    .then(() => res.status(201).send("Product table created!"))
+    .then(() => res.status(201).send("Orders table created!"))
     .catch(next);
 });
 
