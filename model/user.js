@@ -96,6 +96,13 @@ const User = {
             }
         });
     },   //-- end of updateUserPw method
+    deleteUser: function(userid) {
+        return pool.query(`DELETE FROM users WHERE userid = $1`, [userid])
+        .then((response) => response.rowCount)
+        .catch((error) => {
+            throw error;
+        });
+    },   //-- end of deleteUser method
 }
 
 // export the User object so that it can be used by the controller layer when the web service is being called

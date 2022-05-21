@@ -185,6 +185,18 @@ app.put('/users/:id/resetPassword', (req, res) => {
     });
 });
 
+// DELETE method 
+// to delete a user by its userid in the database
+app.delete('/users/:id', async (req, res, next) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    const userid = req.params.id;
+
+    // supply the 1 parameter retrieved by the caller of the web service
+    User.deleteUser(userid)
+    .then(() => res.status(200).send("User is successfully deleted"))
+    .catch(next);
+});
+
 // DELETE method
 // to drop the user table in the database
 app.delete('/userTable', async (req, res, next) => {
@@ -192,8 +204,6 @@ app.delete('/userTable', async (req, res, next) => {
     .then(() => res.status(201).send("Test table dropped successfully!"))
     .catch(next);
 });
-
-
 /////////////////////////////////////
 // END OF SECTION FOR USERS DATABASE
 /////////////////////////////////////
