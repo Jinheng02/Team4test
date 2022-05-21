@@ -27,11 +27,12 @@ const { createCategoryTable,
 
 
 // for cart database
-const { createCartTable } = require('../model/cart');
+const { addCartItem, createCartsTable } = require('../model/cart');
 
 // for orders database
 const { createOrdersTable, addOrder, deleteOrdersTable, alterOrdersTable } = require("../model/order");
-const { addCartItem } = require('../model/cart');
+//const { createProductTable, addProduct } = require("../model/product");
+
 
 // to display what port is server running on
 const PORT = process.env.PORT || 3000;
@@ -516,6 +517,54 @@ app.post('/users/cart/cartitem', async (req, res, next) => {
     .then(() => res.status(201).send("New Records Inserted!"))
     .catch(next);
 });
+/////////////////////////////////////
+// END OF SECTION FOR USERS DATABASE
+/////////////////////////////////////
+
+
+/////////////////////////////////////////////
+// THIS SECTION IS FOR THE PRODUCTS DATABASE
+/////////////////////////////////////////////
+
+// to add new product to the products database
+app.post('/product', async (req, res, next) => {
+    const name = req.body.name;
+    const price = req.body.price;
+    const desc = req.body.desc;
+
+    return addProduct(name, price, desc)
+    .then(() => res.status(201).send("New Records Inserted!"))
+    .catch(next);
+});
+////////////////////////////////////////
+// END OF SECTION FOR PRODUCTS DATABASE
+////////////////////////////////////////
+
+
+////////////////////////////////////////
+// THIS SECTION IS FOR THE CART DATABASE
+////////////////////////////////////////
+
+// to add carts table
+app.post('/cartsTable', async (req, res, next) => {
+    return createCartsTable()
+    .then(() => res.status(201).send("Carts table created!"))
+    .catch(next);
+});
+
+
+// new cart item 
+app.post('/cart/:cartItem', async (req, res, next) => {
+    const id = req.body.id;
+    const cart_id = req.body.cart_id;
+    const product_id = req.body.product_id;
+    const quantity = req.body.quantity;
+
+    return addCartItem(id, cart_id, product_id, quantity)
+    .then(() => res.status(201).send("New Records Inserted!"))
+    .catch(next);
+});
+
 ////////////////////////////////////////
 // END OF SECTION FOR CART DATABASE
 ////////////////////////////////////////
