@@ -1,5 +1,6 @@
 const pool = require("../dbConnection");
 
+//////////////////////// queries to create tables /////////////////////////
 const CREATE_CARTS_TABLE = `
 create table carts (
     cartid serial primary key
@@ -18,13 +19,21 @@ CREATE TABLE cartItem (
     quantity INT(4) NOT NULL
 )`
 
-//////////////////// CARTS TABLE ///////////////////////
-
 // To create cart table
 module.exports.createCartsTable = function createCartsTable() {
     return pool.query(CREATE_CARTS_TABLE)
         .then(() => {
             console.log("Carts table created!");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
+// To create cart table
+module.exports.alterCartsTable = function alterCartsTable() {
+    return pool.query(ALTER_CARTS_TABLE)
+        .then(() => {
+            console.log("Foreign key in carts table added!");
         }).catch((err) => {
             console.log(err);
         })
