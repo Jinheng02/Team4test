@@ -13,7 +13,8 @@ const { createProductTable,
     deleteProductTable, 
     getProduct, 
     getProductById, 
-    updateProduct
+    updateProduct,
+    alterProductTable
 } = require("../model/product");
 
 // for categories database
@@ -368,6 +369,13 @@ app.put('/products/:id', async (req, res, next) => {
     
     return updateProduct(name, price, desc, image_url, category_id, productid)
     .then(() => res.send(`Updated product successfully!`))
+    .catch(next);
+});
+
+// delete products table
+app.put('/productTable', async (req, res, next) => {
+    return alterProductTable()
+    .then(() => res.status(201).send(`Product table altered!`))
     .catch(next);
 });
 
