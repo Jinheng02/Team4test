@@ -56,9 +56,9 @@ module.exports.getOrders = function getOrders() {
         });
 };
 
-// update orders database method
+// insert new order database method
 module.exports.addOrder = function addOrder(userid, total) {
-    return pool.query(`INSERT INTO products (userid, name) VALUES($1, $2) RETURNING *`,
+    return pool.query(`INSERT INTO orders (userid, name) VALUES($1, $2) RETURNING *`,
         [userid, total])
         .then(() => console.log("Orders Inserted!"))
         .catch((error) => {

@@ -469,7 +469,7 @@ app.post('/orders', async (req, res, next) => {
     const userid = req.body.userid;
     const total = req.body.total;
 
-    return addProduct(userid, total)
+    return addOrder(userid, total)
     .then(() => res.status(201).send("New Product Inserted!"))
     .catch(next);
 });
