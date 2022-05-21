@@ -464,7 +464,7 @@ app.get('/orders', async (req, res, next) => {
 });
 
 // add new order to orders table
-app.post('/products', async (req, res, next) => {
+app.post('/orders', async (req, res, next) => {
     // retreive from the req body that is passed over
     const userid = req.body.userid;
     const total = req.body.total;
