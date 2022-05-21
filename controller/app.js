@@ -16,7 +16,7 @@ const { createProductTable,
 // for categories database
 const { createCategoryTable, 
     addCategory, 
-    deleteCategorytTable, 
+    deleteCategoryTable, 
     getCategory,
     deleteCategoryTable
 } = require("../model/category");
@@ -63,9 +63,9 @@ app.post('/productTable', async (req, res, next) => {
     .catch(next);
 });
 
-// to create the products table
+// to create the categories table
 app.post('/categoryTable', async (req, res, next) => {
-    return createProductTable()
+    return createCategoryTable()
     .then(() => res.status(201).send("Category table created!"))
     .catch(next);
 });
