@@ -80,8 +80,22 @@ const User = {
                 // return the results
                 return callback(null, result.rowCount);
             }
-        })
-    },   //-- end of addUser method
+        });
+    },   //-- end of updateUser method
+    updateUserPw: function(password, userid, callback) {
+        const updateUserPwQuery = `UPDATE users SET password = $1 WHERE userid = $2`;
+        pool.query(updateUserPwQuery, [password, userid], (error, result) => {
+            if (error) {
+                // return the error 
+                return callback(error, null);
+            }
+            // no error
+            else {
+                // return the results
+                return callback(null, result.rowCount);
+            }
+        });
+    },   //-- end of updateUserPw method
 }
 
 // export the User object so that it can be used by the controller layer when the web service is being called

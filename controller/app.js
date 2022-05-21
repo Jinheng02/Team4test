@@ -164,6 +164,27 @@ app.put('/users/:id/', (req, res) => {
     });
 });
 
+// PUT method
+// to rest user password by the userid in the database
+app.put('/users/:id/resetPassword', (req, res) => {
+    // retrieve from the req body msg the parameters that will be passing over
+    const password = req.body.password;
+    const userid = req.params.id;
+
+    // supply the 5 parameters retrieved by the caller of the web service
+    User.updateUserPw(password, userid, (err, result) => {
+        // if there is no error
+        if (!err) {
+            // set status code, send result back
+            res.status(200).send("User password is updated successfully with " + result + " row affected");
+        }
+        // there is an error 
+        else {
+            res.status(500).send("{\"Result\":\"Internal Server Error\"}")
+        }
+    });
+});
+
 // DELETE method
 // to drop the user table in the database
 app.delete('/userTable', async (req, res, next) => {
