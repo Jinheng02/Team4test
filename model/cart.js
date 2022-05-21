@@ -3,7 +3,7 @@ const pool = require("../dbConnection");
 const CREATE_CARTS_TABLE = `
 CREATE TABLE carts (
     cart_id SERIAL primary key,
-    user_id int
+    user_id int foreign key
 )
 `
 const CREATE_CART_ITEM_TABLE = `
