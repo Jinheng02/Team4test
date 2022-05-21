@@ -12,7 +12,7 @@ const CREATE_CATEGORY_TABLE = `
 `
 
 const DROP_TABLE_SQL = `
-    DROP TABLE IF EXISTS categories;
+    DROP TABLE IF EXISTS categories CASCADE;
 `
 
 // Create Category Table
