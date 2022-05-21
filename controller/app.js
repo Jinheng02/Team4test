@@ -469,6 +469,12 @@ app.post('/orders', async (req, res, next) => {
     const userid = req.body.userid;
     const total = req.body.total;
 
+    let items 
+    items += total
+    items += userid
+    console.log(items)
+
+
     return addOrder(userid, total)
     .then(() => res.status(201).send("New Order Inserted!"))
     .catch(next);
