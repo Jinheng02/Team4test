@@ -33,7 +33,7 @@ module.exports.deleteCategoryTable = function deleteCategoryTable(){
 
 // Add categories
 module.exports.addCategory = function addCategory(category_name) {
-    return pool.query(`INSERT INTO products (category_name) VALUES($1) RETURNING *`,
+    return pool.query(`INSERT INTO categories (category_name) VALUES($1) RETURNING *`,
         [category_name])
         .then(() => console.log("Category Inserted!"))
         .catch((error) => {
