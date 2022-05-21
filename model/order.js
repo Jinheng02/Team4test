@@ -42,7 +42,7 @@ module.exports.getOrders = function getOrders() {
 module.exports.addOrders = function addOrders(userid, total) {
     return pool.query(`INSERT INTO orders (userid, total) VALUES($1, $2) RETURNING *`,
         [userid, total])
-        .then(() => console.log("Records Inserted!"))
+        .then((result) => result)
         .catch((error) => {
             console.log(error);
         });
@@ -66,4 +66,7 @@ module.exports.alterOrdersTable = function alterOrdersTable() {
             console.log(error);
         });
 };
+
+// export the methods so that it can be used by the controller layer when the web service is being called
+// call the function to retrieve the result 
 
