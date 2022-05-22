@@ -4,18 +4,28 @@ const CREATE_ORDERS_TABLE = `
     CREATE TABLE orders (
         order_id SERIAL primary key,
         userid INT NOT NULL,
+        productid INT NOT NULL,
+        quantity INT NOT NULL,
+        shipping_address VARCHAR(200),
         total DECIMAL(8, 2) NOT NULL,
         date TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
     )
 `
-
+// drop table query
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS orders;
 `
 
+// altering tables userid for foreign key
 const ALTER_ORDERS_TABLE = `
     ALTER TABLE orders
     ADD FOREIGN KEY (userid) REFERENCES users(userid);
+`
+
+// altering tables productid for foreign key
+const ALTER_ORDERSPRODUCTID_TABLE = `
+    ALTER TABLE orders
+    ADD FOREIGN KEY (productid) REFERENCES products(productid);
 `
 
 // to create orders table 
@@ -58,10 +68,19 @@ module.exports.deleteOrdersTable = function deleteOrdersTable(){
         })
 };
 
-//alter table for foreign key
+//alter table for userid foreign key
 module.exports.alterOrdersTable = function alterOrdersTable() {
     return pool.query(ALTER_ORDERS_TABLE)
         .then(() => console.log("Orders Table altered!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+//alter table for productid foreign key
+module.exports.alterOrdersProductIdTable = function alterOrdersProductIdTable() {
+    return pool.query(ALTER_ORDERSPRODUCTID_TABLE)
+        .then(() => console.log("Order's productid altered!"))
         .catch((error) => {
             console.log(error);
         });

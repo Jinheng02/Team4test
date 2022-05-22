@@ -33,6 +33,7 @@ const { addCartItem, createCartsTable } = require('../model/cart');
 const { createOrdersTable, 
      deleteOrdersTable, 
      alterOrdersTable,
+     alterOrdersProductIdTable,
      getOrders,
      addOrders,
  } = require("../model/order");
@@ -477,10 +478,17 @@ app.post('/orders', async (req, res, next) => {
     .catch(next);
 });
 
-//alter orders table to add Foreign Key
+//alter orders table to userid add Foreign Key
 app.put('/ordersTableAlter', async (req, res, next) => {
     return alterOrdersTable()
     .then(() => res.status(201).send(`Order table altered!`))
+    .catch(next);
+});
+
+//alter orders table to productid add Foreign Key
+app.put('/ordersTableProductIdAlter', async (req, res, next) => {
+    return alterOrdersProductIdTable()
+    .then(() => res.status(201).send(`Order's productid altered!`))
     .catch(next);
 });
 
