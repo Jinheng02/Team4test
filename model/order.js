@@ -25,7 +25,7 @@ const ALTER_ORDERS_TABLE = `
 // altering tables productid for foreign key
 const ALTER_ORDERSPRODUCTID_TABLE = `
     ALTER TABLE orders
-    ADD FOREIGN KEY (productid) REFERENCES products(productid);
+    ADD FOREIGN KEY (productid) REFERENCES products(product_id);
 `
 
 // to create orders table 
