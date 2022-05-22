@@ -3,16 +3,12 @@ const pool = require("../dbConnection");
 const CREATE_CATEGORY_TABLE = `
     CREATE TABLE category (
         categoryid SERIAL primary key,
-        categoryname VARCHAR(100) NOT NULL,
-        CONSTRAINT fk_category
-            FOREIGN KEY(categoryid) 
-                REFERENCES products(categoryid)
-                    ON DELETE CASCADE
+        categoryname VARCHAR(100) NOT NULL
     )
 `
 
 const DROP_TABLE_SQL = `
-    DROP TABLE IF EXISTS categories CASCADE;
+    DROP TABLE IF EXISTS category CASCADE;
 `
 
 // Create Category Table
