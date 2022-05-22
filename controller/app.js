@@ -33,8 +33,8 @@ const { createCategoryTable,
 const { addCartItem,
     createCartsTable,
     alterCartsTable,
-    newCart,
     getCartByUserId,
+    updateQuantity,
  } = require('../model/cart');
 
 
@@ -598,7 +598,15 @@ app.get('/cart/:userid', async (req, res, next) => {
     .catch(next);
 });
 
+// to update product qunatity in cart
+app.get('/cart', async (req, res, next) => {
 
+    const quantity = req.body.quantity;
+
+    return updateQuantity(quantity)
+    .then((results) => res.send(results))
+    .catch(next);
+});
 ////////////////////////////////////////
 // END OF SECTION FOR CART DATABASE
 ////////////////////////////////////////
