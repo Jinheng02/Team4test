@@ -38,8 +38,9 @@ const { addCartItem,
 const { createOrdersTable, 
      deleteOrdersTable, 
      alterOrdersTable,
+     alterOrdersProductIdTable,
      getOrders,
-     addOrder,
+     addOrders,
  } = require("../model/order");
 //const { createProductTable, addProduct } = require("../model/product");
 
@@ -468,21 +469,31 @@ app.get('/orders', async (req, res, next) => {
     .catch(next);
 });
 
+//to retrieve order based on user's id
+
+
 // add new order to orders table
 app.post('/orders', async (req, res, next) => {
     // retreive from the req body that is passed over
     const userid = req.body.userid;
     const total = req.body.total;
 
-    return addOrder(userid, total)
-    .then(() => res.status(201).send("New Order Inserted!"))
+    return addOrders(userid, total)
+    .then((result) => res.status(201).send(result))
     .catch(next);
 });
 
-//alter orders table to add Foreign Key
+//alter orders table to userid add Foreign Key
 app.put('/ordersTableAlter', async (req, res, next) => {
     return alterOrdersTable()
     .then(() => res.status(201).send(`Order table altered!`))
+    .catch(next);
+});
+
+//alter orders table to productid add Foreign Key
+app.put('/ordersTableProductIdAlter', async (req, res, next) => {
+    return alterOrdersProductIdTable()
+    .then(() => res.status(201).send(`Order's productid altered!`))
     .catch(next);
 });
 
