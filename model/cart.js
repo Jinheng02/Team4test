@@ -40,45 +40,26 @@ module.exports.alterCartsTable = function alterCartsTable() {
 };
 
 // Add new cart
-module.exports.newCart = function newCart(cart_id, user_id) {
-    return pool.query(`INSERT INTO cart (cart_id, user_id) VALUES($1, $2) RETURNING *`, [cart_id, user_id])
+module.exports.newCart = function newCart(cartid, userid, productid, quantity) {
+    return pool.query(`INSERT INTO cart (cartid, userid, productid, quantity) VALUES($1, $2, $3, $4) RETURNING *`, [cartid, userid, productid, quantity])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
             console.log(error);
         });
 };
 
-
-/////////////////////// CART ITEM ////////////////////////
-// create cart item table
-module.exports.createCartItemTable = function createCartItemTable() {
-    return pool.query(CREATE_CART_ITEM_TABLE)
-        .then(() => {app.post('/users/cart/cartitem', async (req, res, next) => {
-            const cart_id = req.body.cart_id;
-            const user_id = req.body.user_id;
-        
-            return addCart(cart_id, user_id)
-            .then(() => res.status(201).send("New Records Inserted!"))
-            .catch(next);
-        });
-            console.log("Cart table created");
-        }).catch((error) => {
-            console.log(error);
-        })
-}
-
-// Get cart items
-module.exports.getCartItems = function getCartItems() {
-    return pool.query(`SELECT  from cartItems`)
-        .then((response) => response.rows)
+// get cart items by userid
+module.exports.getCartByUserId = function getCart() {
+    return pool.query(`select productid, quantity from carts`)
+        .then((results) => results.rows)
         .catch((error) => {
-            throw error;
+            console.log(error);
         });
 };
 
-// Add new cart item
-module.exports.addCartItem = function addCartItem(id, cart_id, product_id, quantity) {
-    return pool.query(`INSERT INTO cartItem (id, cart_id, product_id, quantity) VALUES($1, $2, $3, $4) RETURNING *`, [id, cart_id, product_id, quantity])
+// Add item into cart
+module.exports.addCartItem = function addCartItem(cartid, userid, productid, quantity) {
+    return pool.query(`INSERT INTO carts (cartid, userid, productid, quantity) VALUES($1, $2, $3, $4) RETURNING *`, [cartid, userid, productid, quantity])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
             console.log(error);
