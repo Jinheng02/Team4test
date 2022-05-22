@@ -11,15 +11,15 @@ const CREATE_PRODUCT_TABLE = `
     )
 `
 
-// const ALTER_PRODUCT_TABLE = `
-//     ALTER TABLE products
-//     ADD FOREIGN KEY (categoryid) REFERENCES category(categoryid);
-// `
-
 const ALTER_PRODUCT_TABLE = `
     ALTER TABLE products
-    ADD products_img_url VARCHAR(100);
+    ADD FOREIGN KEY (categoryid) REFERENCES category(categoryid);
 `
+
+// const ALTER_PRODUCT_TABLE = `
+//     ALTER TABLE products
+//     ADD products_img_url VARCHAR(100);
+// `
 
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS products CASCADE;
