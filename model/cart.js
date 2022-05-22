@@ -65,3 +65,12 @@ module.exports.addCartItem = function addCartItem(cartid, userid, productid, qua
             console.log(error);
         });
 };
+
+// update product quantity in cart
+module.exports.updateQuantity = function updateQuantity(cartid, userid, productid, quantity) {
+    return pool.query(`update carts set quantity = $1 WHERE userid = $2  RETURNING address, userid`, [cartid, userid, productid, quantity])
+        .then(() => console.log("quantity updated!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
