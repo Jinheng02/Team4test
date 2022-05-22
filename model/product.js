@@ -41,10 +41,11 @@ module.exports.deleteProductTable = function deleteProductTable(){
 };
 
 // Add products 
-module.exports.addProduct = function addProduct(name, price, desc, image_url, category_id) {
-    return pool.query(`INSERT INTO products (name, price, description, image_url, category_id) VALUES($1, $2, $3, $4, $5) RETURNING *`,
-        [name, price, desc, image_url, category_id])
-        .then(() => console.log("Records Inserted!"))
+module.exports.addProduct = function addProduct(name, price, desc, p_img_url, categoryid) {
+    return pool.query(`INSERT INTO products (name, price, description, products_img_url, categoryid) 
+        VALUES($1, $2, $3, $4, $5) RETURNING *`,
+        [name, price, desc, p_img_url, categoryid])
+        .then(() => console.log("Product Inserted!"))
         .catch((error) => {
             console.log(error);
         });
@@ -61,7 +62,7 @@ module.exports.getProduct = function getProduct() {
 
 // Get Product By Id
 module.exports.getProductById = function getProductById(productid) {
-    return pool.query(`SELECT * FROM products where product_id = ` + productid)
+    return pool.query(`SELECT * FROM products where productid = ` + productid)
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
@@ -69,15 +70,15 @@ module.exports.getProductById = function getProductById(productid) {
 };
 
 // Update Product
-module.exports.updateProduct = function updateProduct(name, price, desc, image_url, category_id, product_id) {
+module.exports.updateProduct = function updateProduct(name, price, desc, p_img_url, categoryid, productid) {
     return pool.query(`Update products 
         set name = $1, 
             price = $2, 
             description = $3, 
-            image_url = $4, 
-            category_id = $5
-        WHERE product_id = $6 RETURNING *`,
-        [name, price, desc, image_url, category_id, product_id])
+            products_img_url = $4, 
+            categoryid = $5
+        WHERE productid = $6 RETURNING *`,
+        [name, price, desc, p_img_url, categoryid, productid])
         .then(() => console.log("Records Updated!"))
         .catch((error) => {
             console.log(error);

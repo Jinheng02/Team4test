@@ -19,7 +19,7 @@ const DROP_TABLE_SQL = `
 module.exports.createCategoryTable = function createCategoryTable(){
     return pool.query(CREATE_CATEGORY_TABLE)
         .then(() => {
-            console.log("Categories table created!");
+            console.log("Category table created!");
         }).catch((err) => {
             console.log(err);
         })
@@ -29,7 +29,7 @@ module.exports.createCategoryTable = function createCategoryTable(){
 module.exports.deleteCategoryTable = function deleteCategoryTable(){
     return pool.query(DROP_TABLE_SQL)
         .then(() => {
-            console.log("Categories table deleted!");
+            console.log("Category table deleted!");
         }).catch((err) => {
             console.log(err);
         })
@@ -37,7 +37,7 @@ module.exports.deleteCategoryTable = function deleteCategoryTable(){
 
 // Add categories
 module.exports.addCategory = function addCategory(category_name) {
-    return pool.query(`INSERT INTO categories (category_name) VALUES($1) RETURNING *`,
+    return pool.query(`INSERT INTO category (categoryname) VALUES($1) RETURNING *`,
         [category_name])
         .then(() => console.log("Category Inserted!"))
         .catch((error) => {
@@ -47,7 +47,7 @@ module.exports.addCategory = function addCategory(category_name) {
 
 // Get Categories
 module.exports.getCategory = function getCategory() {
-    return pool.query(`SELECT * FROM categories`)
+    return pool.query(`SELECT * FROM category`)
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
@@ -56,7 +56,7 @@ module.exports.getCategory = function getCategory() {
 
 // Get Categories
 module.exports.getCategoryById = function getCategoryById(categoryid) {
-    return pool.query(`SELECT * FROM categories where category_id = ` + categoryid)
+    return pool.query(`SELECT * FROM category where categoryid = ` + categoryid)
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);

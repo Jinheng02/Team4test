@@ -346,10 +346,10 @@ app.post('/products', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
-    const image_url = req.body.image_url;
-    const category_id = req.body.category_id;
+    const p_img_url = req.body.p_img_url;
+    const categoryid = req.body.categoryid;
 
-    return addProduct(name, price, desc, image_url, category_id)
+    return addProduct(name, price, desc, p_img_url, categoryid)
     .then(() => res.status(201).send("New Product Inserted!"))
     .catch(next);
 });
@@ -375,11 +375,11 @@ app.put('/products/:id', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
-    const image_url = req.body.image_url;
-    const category_id = req.body.category_id;
+    const p_img_url = req.body.p_img_url;
+    const categoryid = req.body.categoryid;
     const productid = req.params.id;
     
-    return updateProduct(name, price, desc, image_url, category_id, productid)
+    return updateProduct(name, price, desc, p_img_url, categoryid, productid)
     .then(() => res.send(`Updated product successfully!`))
     .catch(next);
 });
