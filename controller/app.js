@@ -45,6 +45,7 @@ const { createOrdersTable,
      alterOrdersProductIdTable,
      getOrders,
      addOrders,
+     getAllOrdersById,
  } = require("../model/order");
 //const { createProductTable, addProduct } = require("../model/product");
 
@@ -486,7 +487,13 @@ app.get('/orders', async (req, res, next) => {
 });
 
 //to retrieve order based on user's id
+app.get('/orders/:id', async (req, res, next) => {
+    const userid = req.params.id;
 
+    return getAllOrdersById(userid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
 
 // add new order to orders table
 app.post('/orders', async (req, res, next) => {
