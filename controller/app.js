@@ -35,6 +35,7 @@ const { addCartItem,
     alterCartsTable,
     getCartByUserId,
     updateQuantity,
+    alterCartsTableProductId,
  } = require('../model/cart');
 
 
@@ -558,9 +559,16 @@ app.post('/cartsTable', async (req, res, next) => {
 });
 
 // to add fk in carts table
-app.post('/alterCartsTable', async (req, res, next) => {
+app.put('/alterCartsTable', async (req, res, next) => {
     return alterCartsTable()
-    .then(() => res.status(201).send("Carts table created!"))
+    .then(() => res.status(201).send("UserId FK created!"))
+    .catch(next);
+});
+
+// to add fk in carts table
+app.put('/alterCartsTableProductId', async (req, res, next) => {
+    return alterCartsTableProductId()
+    .then(() => res.status(201).send("ProductId FK created!"))
     .catch(next);
 });
 

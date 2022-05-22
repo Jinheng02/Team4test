@@ -2,22 +2,23 @@ const pool = require("../dbConnection");
 
 //////////////////////// queries to create tables /////////////////////////
 const CREATE_CARTS_TABLE = `
-create table carts (
-    cartid serial primary key
+    CREATE TABLE carts (
+        cartid SERIAL primary key,
+        userid INT NOT NULL,
+        productid INT NOT NULL,
+        quantity INT NOT NULL
     )
 `
 const ALTER_CARTS_TABLE = `
-alter table carts
-add foreign key (userid) references users (userid)
+    ALTER TABLE carts
+    ADD FOREIGN KEY (userid) REFERENCES users(userid);
 `
 
-const CREATE_CART_ITEM_TABLE = `
-CREATE TABLE cartItem (
-    id SERIAL primary key,
-    cart_id    ??????,
-    product_id  ?????,
-    quantity INT(4) NOT NULL
-)`
+const ALTER_CARTSPRODUCTID_TABLE = `
+    ALTER TABLE carts
+    ADD FOREIGN KEY (productid) REFERENCES products(productid);
+`
+//////////////////////////////////////////////////////////////////////////
 
 // To create cart table
 module.exports.createCartsTable = function createCartsTable() {
@@ -29,11 +30,21 @@ module.exports.createCartsTable = function createCartsTable() {
         })
 };
 
-// To create cart table
+// To alter cart table for fk
 module.exports.alterCartsTable = function alterCartsTable() {
+    return pool.query(ALTER_CARTSPRODUCTID_TABLE)
+        .then(() => {
+            console.log("Foreign key (Userid) in carts table added!");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
+// To alter cart table for fk
+module.exports.alterCartsTableProductId = function alterCartsTableProductId() {
     return pool.query(ALTER_CARTS_TABLE)
         .then(() => {
-            console.log("Foreign key in carts table added!");
+            console.log("Foreign key (Productid) in carts table added!");
         }).catch((err) => {
             console.log(err);
         })
