@@ -72,9 +72,15 @@ module.exports.getOrderByOrderId = function getOrderByOrderId(userid, orderid) {
 //insert data into orders table from cart and users
 module.exports.insertDataIntoOrders = function insertDataIntoOrders(cartid) {
     //This query is to insert data from cart to orders table
-    return pool.query(`INSERT INTO orders (userid, productid, quantity) SELECT userid, productid, quantity FROM carts WHERE cartid = $1`,
-    [cartid])
-    .then((results) => results.rows)
+    return pool.query(`INSERT INTO orders (userid, productid, quantity, shipping_address, total) SELECT c.userid, c.productid, c.quantity, u.address, (p.price * c.quantity) AS total FROM carts c INNER JOIN users u ON u.userid = c.userid INNER JOIN products p ON p.productid = c.productid WHERE cartid = ` + cartid)
+
+    // .then(pool.query(`UPDATE orders SET shipping_address = u.address, total = (p.price * o.quantity) FROM ((orders o INNER JOIN users u ON o.userid = u.userid) INNER JOIN products p ON o.productid = p.productid) WHERE o.userid = ` + userid))
+
+    // .then(pool.query(`UPDATE orders SET total = (p.price * o.quantity) FROM orders o INNER JOIN products p ON o.productid = p.productid WHERE o.userid = ` + userid))
+
+    // .finally(pool.query(`DELETE FROM carts WHERE cartid = ` + cartid))
+
+    // UPDATE orders SET shipping_address = u.address, total = (p.price * o.quantity) FROM orders o INNER JOIN users u ON o.userid = u.userid WHERE o.userid = 
     .catch((error) => {
         console.log(error);
     });

@@ -4,6 +4,7 @@ const cors = require('cors');
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = require("../config");
 const isLoggedInMiddleware = require("../auth/isLoggedInMiddleware");
+const pool = require("../dbConnection");
 // for user database
 const { createUsersTable, dropUsersTable } = require("../model/user");
 const User = require("../model/user");
@@ -515,9 +516,11 @@ app.post('/cart/:cartid/checkout', async (req, res, next) => {
     
     // retreive from the req body that is passed over
     const cartid = req.params.cartid;
+    // const userid = req.params.id
     
     return insertDataIntoOrders(cartid)
-    .then((result) => res.status(201).send(result))
+    // .then(pool.query(`DELETE FROM carts WHERE cartid = ` + cartid))
+    .then(() => res.status(201).send("Finished executing"))
     .catch(next);
 });
 
