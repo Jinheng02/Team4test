@@ -92,4 +92,3 @@ module.exports.updateProduct = function updateProduct(name, price, desc, image_u
 //             console.log(error);
 //         });
 // };
-
