@@ -30,13 +30,14 @@ const { createCategoryTable,
 
 
 // for cart database
-const { addCartItem,
+const { addCart,
     createCartsTable,
     alterCartsTable,
-    getCartByUserId,
+    getAllCartsByUserId,
     updateQuantity,
     alterCartsTableProductId,
-    deleteCartsTable
+    deleteCartsTable,
+    getCartById
  } = require('../model/cart');
 
 
@@ -580,28 +581,38 @@ app.delete('/cartsTable', async (req, res, next) => {
     .catch(next);
 });
 
-// add a new cart 
-app.post('/cart', async (req, res, next) => {
+// add a new cart item
+app.post('/cart/:userid', async (req, res, next) => {
 
-    const userid = req.body.userid;
+    const userid = req.params.userid;
     const productid = req.body.productid;
     const quantity = req.body.quantity;
 
-    return addCartItem(userid, productid, quantity)
-    .then(() => res.status(201).send("New Cart Item Inserted!"))
+    return addCart(userid, productid, quantity)
+    .then((result) => res.status(201).send("New Cart Item Inserted with " + result + " row affected"))
     .catch(next);
 });
 
 // get cart items by userid
-app.get('/cart/:userid', async (req, res, next) => {
+app.get('/carts/:userid', async (req, res, next) => {
 
     const userid = req.params.userid;
 
-    return getCartByUserId(userid)
+    return getAllCartsByUserId(userid)
     .then((results) => res.send(results))
     .catch(next);
 });
 
+// get specific cart item by cartid that belongs to a specific user
+app.get('/users/:id/cart/:cartid', async (req, res, next) => {
+
+    const userid = req.params.id;
+    const cartid = req.params.cartid;
+
+    return getCartById(userid, cartid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
 
 // to update product qunatity in cart
 app.put('/cart/:productid', async (req, res, next) => {

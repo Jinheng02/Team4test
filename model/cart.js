@@ -65,27 +65,27 @@ module.exports.deleteCartsTable = function deleteCartsTable(){
 };
 
 // Add new cart
-module.exports.newCart = function newCart(cartid, userid, productid, quantity) {
-    return pool.query(`INSERT INTO cart (cartid, userid, productid, quantity) VALUES($1, $2, $3, $4) RETURNING *`, [cartid, userid, productid, quantity])
-        .then(() => console.log("Records Inserted!"))
+module.exports.addCart = function addCart (userid, productid, quantity) {
+    return pool.query(`INSERT INTO carts (userid, productid, quantity) VALUES($1, $2, $3)`, [userid, productid, quantity])
+        .then((result) => result.rowCount)
         .catch((error) => {
             console.log(error);
         });
 };
 
 // get cart items by userid
-module.exports.getCartByUserId = function getCart() {
-    return pool.query(`select productid, quantity from carts`)
+module.exports.getAllCartsByUserId = function getAllCartsByUserId(userid) {
+    return pool.query(`SELECT p.name, p.products_img_url, (p.price * c.quantity) AS total, u.username FROM ((carts c INNER JOIN products p ON p.productid=c.productid) INNER JOIN users u ON c.userid = u.userid) WHERE c.userid = $1`, [userid])
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
 };
 
-// Add item into cart
-module.exports.addCartItem = function addCartItem(cartid, userid, productid, quantity) {
-    return pool.query(`INSERT INTO carts (userid, productid, quantity) VALUES($1, $2, $3) RETURNING *`, [userid, productid, quantity])
-        .then(() => console.log("Records Inserted!"))
+// get specific cart item by cartid that belongs to a specific user
+module.exports.getCartById = function getCartById(userid, cartid) {
+    return pool.query(`SELECT p.name, p.products_img_url, (p.price * c.quantity) AS total, u.username FROM ((carts c INNER JOIN products p ON p.productid=c.productid) INNER JOIN users u ON c.userid = u.userid) WHERE c.userid = $1 AND cartid = $2`, [userid, cartid])
+        .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
