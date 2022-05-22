@@ -34,6 +34,7 @@ const { addCartItem,
     createCartsTable,
     alterCartsTable,
     newCart,
+    getCartByUserId,
  } = require('../model/cart');
 
 
@@ -538,44 +539,6 @@ app.delete('/ordersTable', async (req, res, next) => {
 
 
 
-// ////////////////////////////////////////
-// // THIS SECTION IS FOR THE CART DATABASE
-// ////////////////////////////////////////
-
-// app.post('/cart/cart_item', async (req, res, next) => {
-//     const id = req.body.id;
-//     const cart_id = req.body.cart_id;
-//     const product_id = req.body.product_id;
-//     const quantity = req.body.quantity;
-
-//     return addCartItem(id, cart_id, product_id, quantity)
-//     .then(() => res.status(201).send("New Cart item Inserted!"))
-//     .catch(next);
-// });
-
-// // to add new cart
-// app.post('/cartTable', async (req, res, next) => {
-//     return createCartTable()
-//     .then(() => res.status(201).send("Cart table created!"))
-//     .catch(next);
-// });
-
-// // new cart item 
-// app.post('/users/cart/cartitem', async (req, res, next) => {
-//     const id = req.body.id;
-//     const cart_id = req.body.cart_id;
-//     const product_id = req.body.product_id;
-//     const quantity = req.body.quantity;
-
-//     return addCartItem(id, cart_id, product_id, quantity)
-//     .then(() => res.status(201).send("New Records Inserted!"))
-//     .catch(next);
-// });
-/////////////////////////////////////
-// END OF SECTION FOR CART DATABASE
-/////////////////////////////////////
-
-
 ////////////////////////////////////////
 // THIS SECTION IS FOR THE CART DATABASE
 ////////////////////////////////////////
@@ -603,6 +566,29 @@ app.post('/cart', async (req, res, next) => {
     .then(() => res.status(201).send("New Cart Inserted!"))
     .catch(next);
 });
+
+// add new item in cart
+app.post('/cart', async (req, res, next) => {
+    const cartid = req.body.cartid;
+    const userid = req.body.userid;
+    const productid = req.body.productid;
+    const quantity = req.body.quantity;
+
+    return addCartItem(cartid, userid, productid, quantity)
+    .then(() => res.status(201).send("New Item Inserted into the Cart!"))
+    .catch(next);
+});
+
+// get cart items by userid
+app.get('/cart/:userid', async (req, res, next) => {
+
+    const userid = req.params.userid;
+
+    return getCartByUserId(userid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
 
 ////////////////////////////////////////
 // END OF SECTION FOR CART DATABASE
