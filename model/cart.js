@@ -18,6 +18,10 @@ const ALTER_CARTSPRODUCTID_TABLE = `
     ALTER TABLE carts
     ADD FOREIGN KEY (productid) REFERENCES products(productid);
 `
+
+const DROP_CARTS_TABLE_SQL = `
+    DROP TABLE IF EXISTS carts;
+`
 //////////////////////////////////////////////////////////////////////////
 
 // To create cart table
@@ -45,6 +49,16 @@ module.exports.alterCartsTableProductId = function alterCartsTableProductId() {
     return pool.query(ALTER_CARTS_TABLE)
         .then(() => {
             console.log("Foreign key (Productid) in carts table added!");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
+// delete carts table
+module.exports.deleteCartsTable = function deleteCartsTable(){
+    return pool.query(DROP_CARTS_TABLE_SQL)
+        .then(() => {
+            console.log("carts table deleted!");
         }).catch((err) => {
             console.log(err);
         })

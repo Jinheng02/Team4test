@@ -36,6 +36,7 @@ const { addCartItem,
     getCartByUserId,
     updateQuantity,
     alterCartsTableProductId,
+    deleteCartsTable
  } = require('../model/cart');
 
 
@@ -572,6 +573,13 @@ app.put('/alterCartsTableProductId', async (req, res, next) => {
     .catch(next);
 });
 
+// delete table
+app.delete('/cartsTable', async (req, res, next) => {
+    return deleteCartsTable()
+    .then(() => res.status(201).send("carts table dropped successfully!"))
+    .catch(next);
+});
+
 // add a new cart 
 app.post('/cart', async (req, res, next) => {
 
@@ -593,6 +601,7 @@ app.get('/cart/:userid', async (req, res, next) => {
     .then((results) => res.send(results))
     .catch(next);
 });
+
 
 // to update product qunatity in cart
 app.put('/cart/:productid', async (req, res, next) => {
