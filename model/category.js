@@ -70,7 +70,7 @@ module.exports.deleteCategoryById = function deleteCategoryById(categoryid) {
 
 // Update category
 module.exports.updateCategory = function updateCategory(categoryname, categoryid) {
-    return pool.query(`Update category 
+    return pool.query(`UPDATE category 
         set categoryname = $1
         WHERE categoryid = $2 RETURNING *`,
         [categoryname, categoryid])
