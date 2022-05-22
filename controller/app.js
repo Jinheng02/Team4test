@@ -346,10 +346,9 @@ app.post('/products', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
-    const p_img_url = req.body.p_img_url;
     const categoryid = req.body.categoryid;
 
-    return addProduct(name, price, desc, p_img_url, categoryid)
+    return addProduct(name, price, desc, categoryid)
     .then(() => res.status(201).send("New Product Inserted!"))
     .catch(next);
 });
@@ -375,21 +374,20 @@ app.put('/products/:id', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
-    const p_img_url = req.body.p_img_url;
     const categoryid = req.body.categoryid;
     const productid = req.params.id;
     
-    return updateProduct(name, price, desc, p_img_url, categoryid, productid)
+    return updateProduct(name, price, desc, categoryid, productid)
     .then(() => res.send(`Updated product successfully!`))
     .catch(next);
 });
 
 // alter products table
-app.post('/productTableAlter', async (req, res, next) => {
-    return alterProductTable()
-    .then(() => res.status(201).send(`Product table altered!`))
-    .catch(next);
-});
+// app.post('/productTableAlter', async (req, res, next) => {
+//     return alterProductTable()
+//     .then(() => res.status(201).send(`Product table altered!`))
+//     .catch(next);
+// });
 
 // delete products table
 app.delete('/productTable', async (req, res, next) => {
