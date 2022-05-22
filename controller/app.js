@@ -576,18 +576,6 @@ app.post('/cart', async (req, res, next) => {
     .catch(next);
 });
 
-// // add new item in cart
-// app.post('/cartItem', async (req, res, next) => {
-//     const cartid = req.body.cartid;
-//     const userid = req.body.userid;
-//     const productid = req.body.productid;
-//     const quantity = req.body.quantity;
-
-//     return addCartItem(cartid, userid, productid, quantity)
-//     .then(() => res.status(201).send("New Item Inserted into the Cart!"))
-//     .catch(next);
-// });
-
 // get cart items by userid
 app.get('/cart/:userid', async (req, res, next) => {
 
@@ -599,7 +587,7 @@ app.get('/cart/:userid', async (req, res, next) => {
 });
 
 // to update product qunatity in cart
-app.get('/cart', async (req, res, next) => {
+app.put('/cart', async (req, res, next) => {
 
     const quantity = req.body.quantity;
 
