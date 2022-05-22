@@ -17,7 +17,7 @@ const CREATE_PRODUCT_TABLE = `
 // `
 
 const DROP_TABLE_SQL = `
-    DROP TABLE IF EXISTS products;
+    DROP TABLE IF EXISTS products CASCADE;
 `
 
 // Create Product Table
