@@ -59,7 +59,7 @@ module.exports.getCartByUserId = function getCart() {
 
 // Add item into cart
 module.exports.addCartItem = function addCartItem(cartid, userid, productid, quantity) {
-    return pool.query(`INSERT INTO carts (cartid, userid, productid, quantity) VALUES($1, $2, $3, $4) RETURNING *`, [cartid, userid, productid, quantity])
+    return pool.query(`INSERT INTO carts (userid, productid, quantity) VALUES($1, $2, $3) RETURNING *`, [userid, productid, quantity])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
             console.log(error);
