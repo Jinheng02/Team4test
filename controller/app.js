@@ -30,11 +30,14 @@ const { createCategoryTable,
 
 
 // for cart database
-const { addCartItem,
+const { addCart,
     createCartsTable,
     alterCartsTable,
-    newCart,
-    getCartByUserId,
+    getAllCartsByUserId,
+    updateQuantity,
+    alterCartsTableProductId,
+    deleteCartsTable,
+    getCartById
  } = require('../model/cart');
 
 
@@ -572,45 +575,69 @@ app.post('/cartsTable', async (req, res, next) => {
 });
 
 // to add fk in carts table
-app.post('/alterCartsTable', async (req, res, next) => {
+app.put('/alterCartsTable', async (req, res, next) => {
     return alterCartsTable()
-    .then(() => res.status(201).send("Carts table created!"))
+    .then(() => res.status(201).send("UserId FK created!"))
     .catch(next);
 });
 
-// add a new cart 
-app.post('/cart', async (req, res, next) => {
-    const cartid = req.body.cartid;
-    const userid = req.body.userid;
-
-    return newCart(cartid, userid)
-    .then(() => res.status(201).send("New Cart Inserted!"))
+// to add fk in carts table
+app.put('/alterCartsTableProductId', async (req, res, next) => {
+    return alterCartsTableProductId()
+    .then(() => res.status(201).send("ProductId FK created!"))
     .catch(next);
 });
 
-// add new item in cart
-app.post('/cart', async (req, res, next) => {
-    const cartid = req.body.cartid;
-    const userid = req.body.userid;
+// delete table
+app.delete('/cartsTable', async (req, res, next) => {
+    return deleteCartsTable()
+    .then(() => res.status(201).send("carts table dropped successfully!"))
+    .catch(next);
+});
+
+// add a new cart item
+app.post('/cart/:userid', async (req, res, next) => {
+
+    const userid = req.params.userid;
     const productid = req.body.productid;
     const quantity = req.body.quantity;
 
-    return addCartItem(cartid, userid, productid, quantity)
-    .then(() => res.status(201).send("New Item Inserted into the Cart!"))
+    return addCart(userid, productid, quantity)
+    .then((result) => res.status(201).send("New Cart Item Inserted with " + result + " row affected"))
     .catch(next);
 });
 
 // get cart items by userid
-app.get('/cart/:userid', async (req, res, next) => {
+app.get('/carts/:userid', async (req, res, next) => {
 
     const userid = req.params.userid;
 
-    return getCartByUserId(userid)
+    return getAllCartsByUserId(userid)
     .then((results) => res.send(results))
     .catch(next);
 });
 
+// get specific cart item by cartid that belongs to a specific user
+app.get('/users/:id/cart/:cartid', async (req, res, next) => {
 
+    const userid = req.params.id;
+    const cartid = req.params.cartid;
+
+    return getCartById(userid, cartid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// to update product qunatity in cart
+app.put('/cart/:productid', async (req, res, next) => {
+
+    const productid = req.body.productid;
+    const quantity = req.body.quantity;
+
+    return updateQuantity(quantity)
+    .then((results) => res.send(results))
+    .catch(next);
+});
 ////////////////////////////////////////
 // END OF SECTION FOR CART DATABASE
 ////////////////////////////////////////

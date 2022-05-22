@@ -18,7 +18,7 @@ const CREATE_PRODUCT_TABLE = `
 
 // const ALTER_PRODUCT_TABLE = `
 //     ALTER TABLE products
-//     DROP COLUMN products_img_url;
+//     ADD products_img_url VARCHAR(100);
 // `
 
 const DROP_TABLE_SQL = `
