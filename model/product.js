@@ -11,10 +11,10 @@ const CREATE_PRODUCT_TABLE = `
     )
 `
 
-const ALTER_PRODUCT_TABLE = `
-    ALTER TABLE products
-    ADD FOREIGN KEY (categoryid) REFERENCES category(categoryid);
-`
+// const ALTER_PRODUCT_TABLE = `
+//     ALTER TABLE products
+//     ADD FOREIGN KEY (categoryid) REFERENCES category(categoryid);
+// `
 
 // const ALTER_PRODUCT_TABLE = `
 //     ALTER TABLE products
@@ -99,10 +99,10 @@ module.exports.deleteProduct = function deleteProduct(productid) {
 };
 
 // Update Product
-module.exports.alterProductTable = function alterProductTable() {
-    return pool.query(ALTER_PRODUCT_TABLE)
-        .then(() => console.log("Table altered!"))
-        .catch((error) => {
-            console.log(error);
-        });
-};
+// module.exports.alterProductTable = function alterProductTable() {
+//     return pool.query(ALTER_PRODUCT_TABLE)
+//         .then(() => console.log("Table altered!"))
+//         .catch((error) => {
+//             console.log(error);
+//         });
+// };
