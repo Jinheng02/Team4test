@@ -1,13 +1,13 @@
 const pool = require("../dbConnection");
 
 const CREATE_CATEGORY_TABLE = `
-    CREATE TABLE categories (
-        category_id SERIAL primary key,
-        category_name VARCHAR(100) NOT NULL,
+    CREATE TABLE category (
+        categoryid SERIAL primary key,
+        categoryname VARCHAR(100) NOT NULL,
         CONSTRAINT fk_category
-        FOREIGN KEY(category_id) 
-        REFERENCES products(category_id)
-        ON DELETE CASCADE
+            FOREIGN KEY(categoryid) 
+                REFERENCES products(categoryid)
+                    ON DELETE CASCADE
     )
 `
 

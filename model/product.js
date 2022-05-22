@@ -2,12 +2,12 @@ const pool = require("../dbConnection");
 
 const CREATE_PRODUCT_TABLE = `
     CREATE TABLE products (
-        product_id SERIAL primary key,
+        productid SERIAL primary key,
         name VARCHAR(100) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
         description VARCHAR(255) NOT NULL,
-        image_url VARCHAR(100) NULL,
-        category_id INT NOT NULL
+        products_img_url VARCHAR(100) NULL,
+        categoryid INT NOT NULL
     )
 `
 
