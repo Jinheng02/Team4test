@@ -14,6 +14,7 @@ const { createProductTable,
     getProduct, 
     getProductById, 
     updateProduct,
+    deleteProduct,
     alterProductTable
 } = require("../model/product");
 
@@ -22,7 +23,9 @@ const { createCategoryTable,
     addCategory, 
     deleteCategoryTable, 
     getCategory,
-    getCategoryById
+    getCategoryById,
+    deleteCategoryById,
+    updateCategory
 } = require("../model/category");
 
 
@@ -31,6 +34,7 @@ const { addCartItem,
     createCartsTable,
     alterCartsTable,
     newCart,
+    getCartByUserId,
  } = require('../model/cart');
 
 
@@ -347,10 +351,9 @@ app.post('/products', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
-    const image_url = req.body.image_url;
-    const category_id = req.body.category_id;
+    const categoryid = req.body.categoryid;
 
-    return addProduct(name, price, desc, image_url, category_id)
+    return addProduct(name, price, desc, categoryid)
     .then(() => res.status(201).send("New Product Inserted!"))
     .catch(next);
 });
@@ -376,12 +379,20 @@ app.put('/products/:id', async (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
-    const image_url = req.body.image_url;
-    const category_id = req.body.category_id;
+    const categoryid = req.body.categoryid;
     const productid = req.params.id;
     
-    return updateProduct(name, price, desc, image_url, category_id, productid)
+    return updateProduct(name, price, desc, categoryid, productid)
     .then(() => res.send(`Updated product successfully!`))
+    .catch(next);
+});
+
+// delete product
+app.delete('/products/:id', async (req, res, next) => {
+    const productid = req.params.id;
+
+    return deleteProduct(productid)
+    .then(() => res.status(201).send(`Deleted product Successfully!`))
     .catch(next);
 });
 
@@ -405,19 +416,19 @@ app.delete('/productTable', async (req, res, next) => {
 
 
 ///////////////////////////////////////////////
-// THIS SECTION IS FOR THE CATEGORIES DATABASE
+// THIS SECTION IS FOR THE CATEGORY DATABASE
 ///////////////////////////////////////////////
 
 // to add new category to the categories database
 app.post('/category', async (req, res, next) => {
-    const categoryName = req.body.categoryName;
+    const categoryname = req.body.categoryname;
 
-    return addCategory(categoryName)
+    return addCategory(categoryname)
     .then(() => res.status(201).send("New Category Inserted!"))
     .catch(next);
 });
 
-// to get categories from database
+// to get category from database
 app.get('/category', async (req, res, next) => {
     return getCategory()
     .then((results) => res.send(results))
@@ -433,28 +444,33 @@ app.get('/category/:id', async (req, res, next) => {
     .catch(next);
 });
 
-// to update products table
-// app.put('/products/:id', async (req, res, next) => {
-//     const name = req.body.name;
-//     const price = req.body.price;
-//     const desc = req.body.desc;
-//     const image_url = req.body.image_url;
-//     const category_id = req.body.category_id;
-//     const productid = req.params.id;
+// to update category table
+app.put('/category/:id', async (req, res, next) => {
+    const categoryid = req.params.id;
+    const categoryname = req.body.categoryname;
     
-//     return updateProduct(name, price, desc, image_url, category_id, productid)
-//     .then(() => res.send(`Updated product successfully!`))
-//     .catch(next);
-// });
+    return updateCategory(categoryname, categoryid)
+    .then(() => res.send(`Updated category successfully!`))
+    .catch(next);
+});
 
-// delete products table
+// delete category
+app.delete('/category/:id', async (req, res, next) => {
+    const categoryid = req.params.id;
+
+    return deleteCategoryById(categoryid)
+    .then(() => res.status(201).send(`Deleted category Successfully!`))
+    .catch(next);
+});
+
+// delete category table
 app.delete('/categoryTable', async (req, res, next) => {
     return deleteCategoryTable()
     .then(() => res.status(201).send(`Category table dropped!`))
     .catch(next);
 });
 //////////////////////////////////////////
-// END OF SECTION FOR CATEGORIES DATABASE
+// END OF SECTION FOR CATEGORY DATABASE
 //////////////////////////////////////////
 
 
@@ -530,44 +546,6 @@ app.delete('/ordersTable', async (req, res, next) => {
 
 
 
-// ////////////////////////////////////////
-// // THIS SECTION IS FOR THE CART DATABASE
-// ////////////////////////////////////////
-
-// app.post('/cart/cart_item', async (req, res, next) => {
-//     const id = req.body.id;
-//     const cart_id = req.body.cart_id;
-//     const product_id = req.body.product_id;
-//     const quantity = req.body.quantity;
-
-//     return addCartItem(id, cart_id, product_id, quantity)
-//     .then(() => res.status(201).send("New Cart item Inserted!"))
-//     .catch(next);
-// });
-
-// // to add new cart
-// app.post('/cartTable', async (req, res, next) => {
-//     return createCartTable()
-//     .then(() => res.status(201).send("Cart table created!"))
-//     .catch(next);
-// });
-
-// // new cart item 
-// app.post('/users/cart/cartitem', async (req, res, next) => {
-//     const id = req.body.id;
-//     const cart_id = req.body.cart_id;
-//     const product_id = req.body.product_id;
-//     const quantity = req.body.quantity;
-
-//     return addCartItem(id, cart_id, product_id, quantity)
-//     .then(() => res.status(201).send("New Records Inserted!"))
-//     .catch(next);
-// });
-/////////////////////////////////////
-// END OF SECTION FOR CART DATABASE
-/////////////////////////////////////
-
-
 ////////////////////////////////////////
 // THIS SECTION IS FOR THE CART DATABASE
 ////////////////////////////////////////
@@ -595,6 +573,29 @@ app.post('/cart', async (req, res, next) => {
     .then(() => res.status(201).send("New Cart Inserted!"))
     .catch(next);
 });
+
+// add new item in cart
+app.post('/cart', async (req, res, next) => {
+    const cartid = req.body.cartid;
+    const userid = req.body.userid;
+    const productid = req.body.productid;
+    const quantity = req.body.quantity;
+
+    return addCartItem(cartid, userid, productid, quantity)
+    .then(() => res.status(201).send("New Item Inserted into the Cart!"))
+    .catch(next);
+});
+
+// get cart items by userid
+app.get('/cart/:userid', async (req, res, next) => {
+
+    const userid = req.params.userid;
+
+    return getCartByUserId(userid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
 
 ////////////////////////////////////////
 // END OF SECTION FOR CART DATABASE
