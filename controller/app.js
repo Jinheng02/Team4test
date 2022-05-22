@@ -419,9 +419,9 @@ app.delete('/productTable', async (req, res, next) => {
 
 // to add new category to the categories database
 app.post('/category', async (req, res, next) => {
-    const categoryName = req.body.categoryName;
+    const categoryname = req.body.categoryname;
 
-    return addCategory(categoryName)
+    return addCategory(categoryname)
     .then(() => res.status(201).send("New Category Inserted!"))
     .catch(next);
 });
