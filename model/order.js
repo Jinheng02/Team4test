@@ -25,7 +25,7 @@ const ALTER_ORDERS_TABLE = `
 // altering tables productid for foreign key
 const ALTER_ORDERSPRODUCTID_TABLE = `
     ALTER TABLE orders
-    ADD FOREIGN KEY (productid) REFERENCES products(product_id);
+    ADD FOREIGN KEY (productid) REFERENCES products(productid);
 `
 
 // to create orders table 
@@ -42,6 +42,16 @@ module.exports.createOrdersTable = function createOrdersTable() {
 // get all orders from database method
 module.exports.getOrders = function getOrders() {
     return pool.query(`SELECT * FROM orders`)
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// get all orders by a specific userid
+module.exports.getAllOrdersById = function getAllOrdersById(userid) {
+    return pool.query(`SELECT o.shipping_address o.total o.quantity userid 'belongs to userid' FROM ((orders o INNER JOIN products p ON p.productid = o.productid) INNER JOIN users u ON o.userid = u.userid) WHERE userid = $1 RETURNING *`,
+    [userid])
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
