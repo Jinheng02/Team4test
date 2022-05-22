@@ -16,6 +16,11 @@ const CREATE_PRODUCT_TABLE = `
 //     ADD FOREIGN KEY (categoryid) REFERENCES category(categoryid);
 // `
 
+const ALTER_PRODUCT_TABLE = `
+    ALTER TABLE products
+    DROP COLUMN products_img_url;
+`
+
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS products CASCADE;
 `
@@ -86,10 +91,10 @@ module.exports.updateProduct = function updateProduct(name, price, desc, p_img_u
 };
 
 // Update Product
-// module.exports.alterProductTable = function alterProductTable() {
-//     return pool.query(ALTER_PRODUCT_TABLE)
-//         .then(() => console.log("Table altered!"))
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// };
+module.exports.alterProductTable = function alterProductTable() {
+    return pool.query(ALTER_PRODUCT_TABLE)
+        .then(() => console.log("Table altered!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
