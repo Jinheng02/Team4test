@@ -7,10 +7,11 @@ const CREATE_ORDERS_TABLE = `
         productid INT NOT NULL,
         quantity INT NOT NULL,
         shipping_address VARCHAR(200),
-        total DECIMAL(8, 2) NOT NULL,
+        total DECIMAL(8, 2),
         date TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
     )
 `
+
 // drop table query
 const DROP_TABLE_SQL = `
     DROP TABLE IF EXISTS orders;
@@ -50,13 +51,35 @@ module.exports.getOrders = function getOrders() {
 
 // get all orders by a specific userid
 module.exports.getAllOrdersById = function getAllOrdersById(userid) {
-    return pool.query(`SELECT o.shipping_address o.total o.quantity userid 'belongs to userid' FROM ((orders o INNER JOIN products p ON p.productid = o.productid) INNER JOIN users u ON o.userid = u.userid) WHERE userid = $1 RETURNING *`,
+    return pool.query(`SELECT p.name, p.products_img_url, o.total, u.address, u.username FROM ((orders o INNER JOIN products p ON p.productid = o.productid) INNER JOIN users u ON o.userid = u.userid) WHERE o.userid = $1 `,
     [userid])
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
 };
+
+//get orders by orderid
+module.exports.getOrderByOrderId = function getOrderByOrderId(userid, orderid) {
+    return pool.query(`SELECT p.name, p.products_img_url, o.total, u.address, u.username FROM ((orders o INNER JOIN products p ON p.productid = o.productid) INNER JOIN users u ON o.userid = u.userid) WHERE o.userid = $1 AND o.order_id = $2 `,
+        [userid, orderid])
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+//insert data into orders table from cart and users
+module.exports.insertDataIntoOrders = function insertDataIntoOrders(cartid) {
+    //This query is to insert data from cart to orders table
+    return pool.query(`INSERT INTO orders (userid, productid, quantity) SELECT userid, productid, quantity FROM carts WHERE cartid = $1`,
+    [cartid])
+    .then((results) => results.rows)
+    .catch((error) => {
+        console.log(error);
+    });
+};
+
 
 // insert new order database method
 module.exports.addOrders = function addOrders(userid, total) {
@@ -86,6 +109,7 @@ module.exports.alterOrdersTable = function alterOrdersTable() {
             console.log(error);
         });
 };
+
 
 //alter table for productid foreign key
 module.exports.alterOrdersProductIdTable = function alterOrdersProductIdTable() {

@@ -46,6 +46,8 @@ const { createOrdersTable,
      getOrders,
      addOrders,
      getAllOrdersById,
+     getOrderByOrderId,
+     insertDataIntoOrders,
  } = require("../model/order");
 //const { createProductTable, addProduct } = require("../model/product");
 
@@ -487,7 +489,7 @@ app.get('/orders', async (req, res, next) => {
 });
 
 //to retrieve order based on user's id
-app.get('/orders/:id', async (req, res, next) => {
+app.get('/users/:id/orders', async (req, res, next) => {
     const userid = req.params.id;
 
     return getAllOrdersById(userid)
@@ -495,13 +497,23 @@ app.get('/orders/:id', async (req, res, next) => {
     .catch(next);
 });
 
-// add new order to orders table
-app.post('/orders', async (req, res, next) => {
-    // retreive from the req body that is passed over
-    const userid = req.body.userid;
-    const total = req.body.total;
+//to retrieve order based on user's id
+app.get('/users/:id/orders/:orderid', async (req, res, next) => {
+    const userid = req.params.id;
+    const orderid = req.params.orderid
 
-    return addOrders(userid, total)
+    return getOrderByOrderId(userid, orderid)
+    .then((results) => res.send(results))
+    .catch(next);
+});
+
+// 
+app.post('/cart/:cartid/checkout', async (req, res, next) => {
+    
+    // retreive from the req body that is passed over
+    const cartid = req.params.cartid;
+    
+    return insertDataIntoOrders(cartid)
     .then((result) => res.status(201).send(result))
     .catch(next);
 });
@@ -513,12 +525,14 @@ app.put('/ordersTableAlter', async (req, res, next) => {
     .catch(next);
 });
 
+
 //alter orders table to productid add Foreign Key
 app.put('/ordersTableProductIdAlter', async (req, res, next) => {
     return alterOrdersProductIdTable()
     .then(() => res.status(201).send(`Order's productid altered!`))
     .catch(next);
 });
+
 
 //delete orders table
 app.delete('/ordersTable', async (req, res, next) => {
