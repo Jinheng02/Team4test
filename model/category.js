@@ -31,17 +31,17 @@ module.exports.deleteCategoryTable = function deleteCategoryTable(){
         })
 };
 
-// Add categories
-module.exports.addCategory = function addCategory(category_name) {
+// Add category
+module.exports.addCategory = function addCategory(categoryname) {
     return pool.query(`INSERT INTO category (categoryname) VALUES($1) RETURNING *`,
-        [category_name])
+        [categoryname])
         .then(() => console.log("Category Inserted!"))
         .catch((error) => {
             console.log(error);
         });
 };
 
-// Get Categories
+// Get Category
 module.exports.getCategory = function getCategory() {
     return pool.query(`SELECT * FROM category`)
         .then((results) => results.rows)
@@ -50,10 +50,31 @@ module.exports.getCategory = function getCategory() {
         });
 };
 
-// Get Categories
+// Get Category By Id
 module.exports.getCategoryById = function getCategoryById(categoryid) {
     return pool.query(`SELECT * FROM category where categoryid = ` + categoryid)
         .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// Delete Category By Id
+module.exports.deleteCategoryById = function deleteCategoryById(categoryid) {
+    return pool.query(`DELETE FROM category where categoryid = ` + categoryid)
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// Update category
+module.exports.updateCategory = function updateCategory(categoryname, categoryid) {
+    return pool.query(`Update category 
+        set categoryname = $1
+        WHERE categoryid = $2 RETURNING *`,
+        [categoryname, categoryid])
+        .then(() => console.log("category Updated!"))
         .catch((error) => {
             console.log(error);
         });

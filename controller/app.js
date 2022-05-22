@@ -14,6 +14,7 @@ const { createProductTable,
     getProduct, 
     getProductById, 
     updateProduct,
+    deleteProduct,
     alterProductTable
 } = require("../model/product");
 
@@ -22,7 +23,9 @@ const { createCategoryTable,
     addCategory, 
     deleteCategoryTable, 
     getCategory,
-    getCategoryById
+    getCategoryById,
+    deleteCategoryById,
+    updateCategory
 } = require("../model/category");
 
 
@@ -382,6 +385,15 @@ app.put('/products/:id', async (req, res, next) => {
     .catch(next);
 });
 
+// delete product
+app.delete('/products/:id', async (req, res, next) => {
+    const productid = req.params.id;
+
+    return deleteProduct(productid)
+    .then(() => res.status(201).send(`Deleted product Successfully!`))
+    .catch(next);
+});
+
 // alter products table
 // app.post('/productTableAlter', async (req, res, next) => {
 //     return alterProductTable()
@@ -402,7 +414,7 @@ app.delete('/productTable', async (req, res, next) => {
 
 
 ///////////////////////////////////////////////
-// THIS SECTION IS FOR THE CATEGORIES DATABASE
+// THIS SECTION IS FOR THE CATEGORY DATABASE
 ///////////////////////////////////////////////
 
 // to add new category to the categories database
@@ -414,7 +426,7 @@ app.post('/category', async (req, res, next) => {
     .catch(next);
 });
 
-// to get categories from database
+// to get category from database
 app.get('/category', async (req, res, next) => {
     return getCategory()
     .then((results) => res.send(results))
@@ -430,28 +442,33 @@ app.get('/category/:id', async (req, res, next) => {
     .catch(next);
 });
 
-// to update products table
-// app.put('/products/:id', async (req, res, next) => {
-//     const name = req.body.name;
-//     const price = req.body.price;
-//     const desc = req.body.desc;
-//     const image_url = req.body.image_url;
-//     const category_id = req.body.category_id;
-//     const productid = req.params.id;
+// to update category table
+app.put('/category/:id', async (req, res, next) => {
+    const categoryid = req.params.id;
+    const categoryname = req.body.categoryname;
     
-//     return updateProduct(name, price, desc, image_url, category_id, productid)
-//     .then(() => res.send(`Updated product successfully!`))
-//     .catch(next);
-// });
+    return updateCategory(categoryname, categoryid)
+    .then(() => res.send(`Updated category successfully!`))
+    .catch(next);
+});
 
-// delete products table
+// delete category
+app.delete('/category/:id', async (req, res, next) => {
+    const categoryid = req.params.id;
+
+    return deleteCategoryById(categoryid)
+    .then(() => res.status(201).send(`Deleted category Successfully!`))
+    .catch(next);
+});
+
+// delete category table
 app.delete('/categoryTable', async (req, res, next) => {
     return deleteCategoryTable()
     .then(() => res.status(201).send(`Category table dropped!`))
     .catch(next);
 });
 //////////////////////////////////////////
-// END OF SECTION FOR CATEGORIES DATABASE
+// END OF SECTION FOR CATEGORY DATABASE
 //////////////////////////////////////////
 
 

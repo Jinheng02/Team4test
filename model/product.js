@@ -46,10 +46,10 @@ module.exports.deleteProductTable = function deleteProductTable(){
 };
 
 // Add products 
-module.exports.addProduct = function addProduct(name, price, desc, p_img_url, categoryid) {
-    return pool.query(`INSERT INTO products (name, price, description, products_img_url, categoryid) 
-        VALUES($1, $2, $3, $4, $5) RETURNING *`,
-        [name, price, desc, p_img_url, categoryid])
+module.exports.addProduct = function addProduct(name, price, desc, categoryid) {
+    return pool.query(`INSERT INTO products (name, price, description, categoryid) 
+        VALUES($1, $2, $3, $4) RETURNING *`,
+        [name, price, desc, categoryid])
         .then(() => console.log("Product Inserted!"))
         .catch((error) => {
             console.log(error);
@@ -67,7 +67,7 @@ module.exports.getProduct = function getProduct() {
 
 // Get Product By Id
 module.exports.getProductById = function getProductById(productid) {
-    return pool.query(`SELECT * FROM products where productid = ` + productid)
+    return pool.query(`SELECT * FROM products WHERE productid = ` + productid)
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
@@ -75,16 +75,24 @@ module.exports.getProductById = function getProductById(productid) {
 };
 
 // Update Product
-module.exports.updateProduct = function updateProduct(name, price, desc, p_img_url, categoryid, productid) {
+module.exports.updateProduct = function updateProduct(name, price, desc, categoryid, productid) {
     return pool.query(`Update products 
         set name = $1, 
             price = $2, 
             description = $3, 
-            products_img_url = $4, 
-            categoryid = $5
-        WHERE productid = $6 RETURNING *`,
-        [name, price, desc, p_img_url, categoryid, productid])
-        .then(() => console.log("Records Updated!"))
+            categoryid = $4
+        WHERE productid = $5 RETURNING *`,
+        [name, price, desc, categoryid, productid])
+        .then(() => console.log("Product Updated!"))
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// Delete Product By Id
+module.exports.deleteProduct = function deleteProduct(productid) {
+    return pool.query(`DELETE FROM products WHERE productid = ` + productid)
+        .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
