@@ -1,11 +1,16 @@
 const pool = require("../dbConnection");
 
+//////////////////////// queries to create tables /////////////////////////
 const CREATE_CARTS_TABLE = `
-CREATE TABLE carts (
-    cart_id serial primary key,
-    user_id int foreign key references users (userid)
-)
+create table carts (
+    cartid serial primary key
+    )
 `
+const ALTER_CARTS_TABLE = `
+alter table carts
+add foreign key (userid) references users (userid)
+`
+
 const CREATE_CART_ITEM_TABLE = `
 CREATE TABLE cartItem (
     id SERIAL primary key,
@@ -13,8 +18,6 @@ CREATE TABLE cartItem (
     product_id  ?????,
     quantity INT(4) NOT NULL
 )`
-
-//////////////////// CARTS TABLE ///////////////////////
 
 // To create cart table
 module.exports.createCartsTable = function createCartsTable() {
@@ -26,8 +29,18 @@ module.exports.createCartsTable = function createCartsTable() {
         })
 };
 
+// To create cart table
+module.exports.alterCartsTable = function alterCartsTable() {
+    return pool.query(ALTER_CARTS_TABLE)
+        .then(() => {
+            console.log("Foreign key in carts table added!");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
 // Add new cart
-module.exports.addCart = function addCart(cart_id, user_id) {
+module.exports.newCart = function newCart(cart_id, user_id) {
     return pool.query(`INSERT INTO cart (cart_id, user_id) VALUES($1, $2) RETURNING *`, [cart_id, user_id])
         .then(() => console.log("Records Inserted!"))
         .catch((error) => {
