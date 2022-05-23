@@ -24,7 +24,7 @@ const DROP_CARTS_TABLE_SQL = `
 `
 //////////////////////////////////////////////////////////////////////////
 
-// To create cart table
+// to create cart table
 module.exports.createCartsTable = function createCartsTable() {
     return pool.query(CREATE_CARTS_TABLE)
         .then(() => {
@@ -34,7 +34,7 @@ module.exports.createCartsTable = function createCartsTable() {
         })
 };
 
-// To alter cart table for fk
+// to alter cart table for userid fk
 module.exports.alterCartsTable = function alterCartsTable() {
     return pool.query(ALTER_CARTSPRODUCTID_TABLE)
         .then(() => {
@@ -44,7 +44,7 @@ module.exports.alterCartsTable = function alterCartsTable() {
         })
 };
 
-// To alter cart table for fk
+// to alter cart table for productid fk
 module.exports.alterCartsTableProductId = function alterCartsTableProductId() {
     return pool.query(ALTER_CARTS_TABLE)
         .then(() => {
@@ -64,7 +64,7 @@ module.exports.deleteCartsTable = function deleteCartsTable(){
         })
 };
 
-// Add new cart
+// add a new cart item
 module.exports.addCart = function addCart (userid, productid, quantity) {
     return pool.query(`INSERT INTO carts (userid, productid, quantity) VALUES($1, $2, $3)`, [userid, productid, quantity])
         .then((result) => result.rowCount)
@@ -84,17 +84,26 @@ module.exports.getAllCartsByUserId = function getAllCartsByUserId(userid) {
 
 // get specific cart item by cartid that belongs to a specific user
 module.exports.getCartById = function getCartById(userid, cartid) {
-    return pool.query(`SELECT p.name, p.products_img_url, (p.price * c.quantity) AS total, u.username FROM ((carts c INNER JOIN products p ON p.productid=c.productid) INNER JOIN users u ON c.userid = u.userid) WHERE c.userid = $1 AND cartid = $2`, [userid, cartid])
+    return pool.query(`select p.name, p.products_img_url, (p.price * c.quantity) AS total, u.username FROM ((carts c INNER JOIN products p ON p.productid=c.productid) INNER JOIN users u ON c.userid = u.userid) WHERE c.userid = $1 AND cartid = $2`, [userid, cartid])
         .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
 };
 
-// update product quantity in cart
-module.exports.updateQuantity = function updateQuantity(cartid, userid, productid, quantity) {
-    return pool.query(`update carts set quantity = $1 WHERE userid = $2  RETURNING address, userid`, [cartid, userid, productid, quantity])
-        .then(() => console.log("quantity updated!"))
+// delete one (1) cart item
+module.exports.deleteCartItem = function deleteCartItem(userid, cartid) {
+    return pool.query(`delete from carts where userid = $1 and cartid = $2`, [userid, cartid])
+        .then((results) => results.rows)
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+// update one (1) product quantity in cart
+module.exports.updateItemQuantity = function updateItemQuantity(userid, quantity) {
+    return pool.query(`update carts set quantity = $2 WHERE userid = $1`, [userid, quantity])
+        .then((results) => results.rows)
         .catch((error) => {
             console.log(error);
         });
