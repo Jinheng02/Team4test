@@ -89,6 +89,7 @@ module.exports.updateProduct = function updateProduct(name, price, desc, categor
         });
 };
 
+
 // Delete Product By Id
 module.exports.deleteProduct = function deleteProduct(productid) {
     return pool.query(`DELETE FROM products WHERE productid = ` + productid)
