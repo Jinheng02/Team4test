@@ -48,10 +48,10 @@ const { createOrdersTable,
      alterOrdersTable,
      alterOrdersProductIdTable,
      getOrders,
-     addOrders,
      getAllOrdersById,
      getOrderByOrderId,
      insertDataIntoOrders,
+     deleteDataFromCart,
  } = require("../model/order");
 //const { createProductTable, addProduct } = require("../model/product");
 
@@ -521,6 +521,16 @@ app.post('/cart/:cartid/checkout', async (req, res, next) => {
     return insertDataIntoOrders(cartid)
     // .then(pool.query(`DELETE FROM carts WHERE cartid = ` + cartid))
     .then(() => res.status(201).send("Finished executing"))
+    .catch(next);
+});
+
+app.delete('/cart/:cartid/checkout', async (req, res, next) => {
+    
+    // retreive from the req body that is passed over
+    const cartid = req.params.cartid;
+    
+    return deleteDataFromCart(cartid)
+    .then(() => res.status(201).send("Finished deleting from cart"))
     .catch(next);
 });
 
