@@ -524,6 +524,7 @@ app.post('/cart/:cartid/checkout', async (req, res, next) => {
     .catch(next);
 });
 
+
 app.delete('/cart/:cartid/checkout', async (req, res, next) => {
     
     // retreive from the req body that is passed over
