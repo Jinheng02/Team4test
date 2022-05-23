@@ -591,12 +591,13 @@ app.put('/alterCartsTableProductId', async (req, res, next) => {
     .catch(next);
 });
 
-// delete table
+// delete carts table
 app.delete('/cartsTable', async (req, res, next) => {
     return deleteCartsTable()
     .then(() => res.status(201).send("carts table dropped successfully!"))
     .catch(next);
 });
+
 // add a new cart item
 app.post('/carts/:userid', async (req, res, next) => {
 
@@ -613,7 +614,7 @@ app.post('/carts/:userid', async (req, res, next) => {
 app.get('/carts/:userid', async (req, res, next) => {
 
     const userid = req.params.userid;
-a
+
     return getAllCartsByUserId(userid)
     .then((result) => res.send(result))
     .catch(next);
