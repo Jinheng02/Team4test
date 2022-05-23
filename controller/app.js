@@ -501,7 +501,7 @@ app.get('/users/:id/orders', async (req, res, next) => {
     .catch(next);
 });
 
-//to retrieve order based on user's id
+//to retrieve order based on user's id and orderid
 app.get('/users/:id/orders/:orderid', async (req, res, next) => {
     const userid = req.params.id;
     const orderid = req.params.orderid
@@ -511,7 +511,7 @@ app.get('/users/:id/orders/:orderid', async (req, res, next) => {
     .catch(next);
 });
 
-// 
+// basically retrieve data from carts table and insert into orders table
 app.post('/cart/:cartid/checkout', async (req, res, next) => {
     
     // retreive from the req body that is passed over
@@ -557,18 +557,6 @@ app.delete('/ordersTable', async (req, res, next) => {
     .catch(next);
 });
 
-
-//add new order to the orders table
-// app.post('/newOrder', async (req, res, next) => {
-//     const amount = req.body.amount;
-//     const total = req.body.total;
-//     const paymentMethod = req.body.paymentMethod;
-//     const ref = req.body.ref; 
-
-//     return addOrder(user_id, amount, total, paymentMethod, checkout_status, ref)
-//     .then(() => res.status(201).send("New Records Inserted!"))
-//     .catch(next);
-// });
 
 ////////////////////////////////////////
 // END OF SECTION FOR ORDERS DATABASE
