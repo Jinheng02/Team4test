@@ -86,6 +86,16 @@ module.exports.insertDataIntoOrders = function insertDataIntoOrders(cartid) {
     });
 };
 
+// delete from cart after inserted into orders table
+module.exports.deleteDataFromCart = function deleteDataFromCart(cartid){
+    return pool.query(`DELETE FROM carts WHERE cartid = ` + cartid)
+        .then(() => {
+            console.log("Data from cart deleted!");
+        }).catch((err) => {
+            console.log(err);
+        })
+};
+
 
 // insert new order database method
 module.exports.addOrders = function addOrders(userid, total) {
