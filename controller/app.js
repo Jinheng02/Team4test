@@ -354,7 +354,14 @@ app.delete('/userTable', async (req, res, next) => {
 /////////////////////////////////////////////
 
 // to add new product to the products database
-app.post('/products', async (req, res, next) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+app.post('/products', isLoggedInMiddleware, async (req, res, next) => {
+    // if role in decoded token is not an admin
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (req.decodedToken.role !== 'admin') {
+        res.status(403).send("Only admins have access...");
+        return;
+    }
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
@@ -382,7 +389,14 @@ app.get('/products/:id', async (req, res, next) => {
 });
 
 // to update products table
-app.put('/products/:id', async (req, res, next) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+app.put('/products/:id', isLoggedInMiddleware, async (req, res, next) => {
+    // if role in decoded token is not an admin
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (req.decodedToken.role !== 'admin') {
+        res.status(403).send("Only admins have access...");
+        return;
+    }
     const name = req.body.name;
     const price = req.body.price;
     const desc = req.body.desc;
@@ -395,7 +409,14 @@ app.put('/products/:id', async (req, res, next) => {
 });
 
 // delete product
-app.delete('/products/:id', async (req, res, next) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+app.delete('/products/:id', isLoggedInMiddleware, async (req, res, next) => {
+    // if role in decoded token is not an admin
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (req.decodedToken.role !== 'admin') {
+        res.status(403).send("Only admins have access...");
+        return;
+    }
     const productid = req.params.id;
 
     return deleteProduct(productid)
@@ -427,7 +448,15 @@ app.delete('/productTable', async (req, res, next) => {
 ///////////////////////////////////////////////
 
 // to add new category to the categories database
-app.post('/category', async (req, res, next) => {
+// added isLoggedInMiddleware to secure the endpoint (authentication)
+app.post('/category', isLoggedInMiddleware, async (req, res, next) => {
+    console.log(req.decodedToken);
+    // if role in decoded token is not an admin
+    // send 403 forbidden (server understand but refuse to authorize -- authorization)
+    if (req.decodedToken.role !== 'admin') {
+        res.status(403).send("Only admins have access...");
+        return;
+    }
     const categoryname = req.body.categoryname;
 
     return addCategory(categoryname)
