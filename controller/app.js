@@ -523,7 +523,13 @@ app.get('/orders', async (req, res, next) => {
 });
 
 //to retrieve order based on user's id
-app.get('/users/:id/orders', async (req, res, next) => {
+app.get('/users/:id/orders', isLoggedInMiddleware, async (req, res, next) => {
+
+    if (userid !== req.decodedToken.userid) {
+        res.status(403).send();
+        return;
+    }
+
     const userid = req.params.id;
 
     return getAllOrdersById(userid)
@@ -532,9 +538,14 @@ app.get('/users/:id/orders', async (req, res, next) => {
 });
 
 //to retrieve order based on user's id and orderid
-app.get('/users/:id/orders/:orderid', async (req, res, next) => {
-    const userid = req.params.id;
+app.get('/users/:id/orders/:orderid', isLoggedInMiddleware, async (req, res, next) => {
+    const userid = parseInt(req.params.id);
     const orderid = req.params.orderid
+
+    if (userid !== req.decodedToken.userid) {
+        res.status(403).send();
+        return;
+    }
 
     return getOrderByOrderId(userid, orderid)
     .then((results) => res.send(results))
@@ -542,11 +553,10 @@ app.get('/users/:id/orders/:orderid', async (req, res, next) => {
 });
 
 // basically retrieve data from carts table and insert into orders table
-app.post('/cart/:cartid/checkout', async (req, res, next) => {
-    
+app.post('/cart/:cartid/checkout', isLoggedInMiddleware, async (req, res, next) => {
+
     // retreive from the req body that is passed over
     const cartid = req.params.cartid;
-    // const userid = req.params.id
     
     return insertDataIntoOrders(cartid)
     // .then(pool.query(`DELETE FROM carts WHERE cartid = ` + cartid))
