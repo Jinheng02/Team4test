@@ -18,16 +18,16 @@ const DROP_TABLE_SQL = `
 `
 
 // altering tables userid for foreign key
-const ALTER_ORDERS_TABLE = `
-    ALTER TABLE orders
-    ADD FOREIGN KEY (userid) REFERENCES users(userid);
-`
+// const ALTER_ORDERS_TABLE = `
+//     ALTER TABLE orders
+//     ADD FOREIGN KEY (userid) REFERENCES users(userid);
+// `
 
 // altering tables productid for foreign key
-const ALTER_ORDERSPRODUCTID_TABLE = `
-    ALTER TABLE orders
-    ADD FOREIGN KEY (productid) REFERENCES products(productid);
-`
+// const ALTER_ORDERSPRODUCTID_TABLE = `
+//     ALTER TABLE orders
+//     ADD FOREIGN KEY (productid) REFERENCES products(productid);
+// `
 
 // to create orders table 
 module.exports.createOrdersTable = function createOrdersTable() {
